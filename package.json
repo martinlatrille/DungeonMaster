@@ -5,6 +5,7 @@
   "author": "Martin Latrille <martin.latrille@outlook.com",
   "main": "index.js",
   "dependencies": {
+    "lodash": "^4.17.4",
     "pixi": "^0.3.1"
   },
   "devDependencies": {
@@ -16,8 +17,8 @@
     "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
-    "start": "webpack-dev-server --content-base build/ --hot --inline",
-    "babel": "babel --presets es2015 index.js -o build/main.bundle.js"
+    "start": "webpack-dev-server --content-base assets/ --hot --inline",
+    "babel": "babel --presets es2015 index.js -o assets/dist/main.bundle.js"
   },
   "license": "ISC"
 }
