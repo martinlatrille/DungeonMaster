@@ -45,7 +45,7 @@ export function keyboard(keyCode, repeat = false) {
 }
 
 function attachMouse(controllableObject) {
-    document.onmousemove = (e) => {
+    document.onmousemove = function (e) {
         const mousePos = {
             x: e.pageX,
             y: e.pageY
@@ -54,7 +54,7 @@ function attachMouse(controllableObject) {
         controllableObject.rotateToMousePos(mousePos)
     }
 
-    document.onclick = (e) => {
+    document.onclick = function (e) {
         const button = e.buttons || e.which || e.button
 
         if (button === 1) {
