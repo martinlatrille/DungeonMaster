@@ -2,20 +2,12 @@ import * as PIXI from 'pixi.js'
 import {windowWidth, windowHeight} from './src/config.js'
 import {attachControls} from './src/commands'
 
-import ColoredRectangle from './src/ColoredRectangle'
+import HeroManager from './src/HeroManager'
+import EnemyManager from './src/EnemyManager'
 
 // Create the renderer and add it to the body
 const renderer = new PIXI.autoDetectRenderer(window.width, window.height)
 document.body.appendChild(renderer.view)
-
-
-// Basic aliases
-const loader = PIXI.loader
-
-const Sprite = PIXI.Sprite
-const TextureCache = PIXI.utils.TextureCache
-const Rectangle = PIXI.Rectangle
-
 
 // Resize the view to fill the entire window
 renderer.view.style.position = 'absolute'
@@ -23,24 +15,37 @@ renderer.view.style.display = 'block'
 renderer.autoResize = true
 renderer.resize(windowWidth, windowHeight)
 
-// Create a red rectangle Sprite
-
-const redRectangle = new ColoredRectangle('red', 20, 20, 20, 20)
-const greenRectangle = new ColoredRectangle('green', 40, 40, 120, 120, true)
-const blueRectangle = new ColoredRectangle('blue', 60, 60, 220, 220, true)
-
-const allObjects = [redRectangle, greenRectangle, blueRectangle]
-
-attachControls(redRectangle)
-
-// Create the stage and add the character
+// Create the stage
 const stage = new PIXI.Container()
 
-allObjects.forEach(obj => {
-    stage.addChild(obj)
-})
+// Create the Hero
+const heroManager = new HeroManager(stage)
+heroManager.addHero(100, 100)
+attachControls(heroManager.hero)
 
 renderer.render(stage)
+
+// Create the EnemyManager
+const enemyManager = new EnemyManager(stage)
+enemyManager.addEnemy(400, 400)
+enemyManager.addEnemy(600, 500)
+enemyManager.addEnemy(400, 600)
+enemyManager.addEnemy(600, 700)
+
+function hotRender() {
+    heroManager.render()
+    enemyManager.render()
+
+    // managers.forEach(manager => manager.render())
+}
+
+function play() {
+    heroManager.move()
+    heroManager.collision()
+
+    enemyManager.move()
+    enemyManager.collision()
+}
 
 /**
  * Updates 60times/second
@@ -52,26 +57,6 @@ function gameLoop() {
     play()
 
     renderer.render(stage)
-}
-
-function hotRender() {
-    allObjects.forEach(obj => {
-        if (obj.render) {
-            obj.render(stage)
-        }
-    })
-}
-
-function play() {
-    allObjects.forEach(obj => {
-        if (obj.move) {
-            obj.move()
-        }
-
-        if (obj.collision) {
-            obj.collision(stage)
-        }
-    })
 }
 
 gameLoop()

@@ -1,7 +1,7 @@
-import * as PIXI from 'pixi.js'
+import CollisionnableObject from './CollisionnableObject'
 import {windowWidth, windowHeight} from './config.js'
 
-export default class ControllableObject extends PIXI.Sprite {
+export default class ControllableObject extends CollisionnableObject {
     constructor(texture) {
         super(texture)
 

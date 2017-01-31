@@ -1,9 +1,11 @@
 import * as PIXI from 'pixi.js'
+import RenderableObject from './RenderableObject'
 import {windowWidth, windowHeight} from './config.js'
+import Enemy from './Enemy'
 
 
-export default class Bullet extends PIXI.Sprite {
-    constructor(posX, posY, angle) {
+export default class Bullet extends RenderableObject {
+    constructor(posX, posY, rotation) {
         const canvas = document.createElement('canvas')
 
         const width = 10
@@ -18,28 +20,26 @@ export default class Bullet extends PIXI.Sprite {
         ctx.fillStyle = color
         ctx.fill()
 
-        super(new PIXI.Texture(new PIXI.BaseTexture(canvas)))
+        super(new PIXI.Texture(new PIXI.BaseTexture(canvas)), width, height)
+
+        this.state = {
+            damage: 20
+        }
 
         this.velocity = {
             x: 30,
             y: 30
         }
 
-        this.state = {
-            isRendered: false,
-            isDestroyed: false
-        }
-
-        this.anchor.set(0.5, 0.5)
         this.position.set(posX, posY)
-        this.rotation = angle
+        this.rotation = rotation
     }
 
-    get isDestroyed() {return this.state.isDestroyed}
-
     damage(object) {
-        this.state.isDestroyed = true
-        object.state.isDestroyed = true
+        if (object instanceof Enemy) {
+            this.isDestroyed = true
+            object.takeDamage(this.state.damage)
+        }
     }
 
     move() {
@@ -52,17 +52,7 @@ export default class Bullet extends PIXI.Sprite {
             this.position.y > windowHeight ||
             this.position.y < 0
         ) {
-            this.state.isDestroyed = true
-        }
-    }
-
-    render(stage) {
-        if (!this.state.isRendered) {
-            stage.addChild(this)
-        }
-
-        if (this.state.isDestroyed) {
-            stage.removeChild(this)
+            this.isDestroyed = true
         }
     }
 }
