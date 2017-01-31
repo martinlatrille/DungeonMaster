@@ -15,47 +15,65 @@ export default class ControllableObject extends CollisionnableObject {
             y: 0
         }
 
-        this.anchor.set(0.5, 0.5)
+        this.keyDown = {
+            up: false,
+            down: false,
+            left: false,
+            right: false
+        }
     }
 
     startGoUp() {
         this.movement.y = -this.velocity.y
+        this.keyDown.up = true
     }
 
     stopGoUp() {
         if (this.movement.y === -this.velocity.y) {
             this.movement.y = 0
         }
+
+        this.keyDown.up = false
     }
 
     startGoDown() {
         this.movement.y = this.velocity.y
+
+        this.keyDown.down = true
     }
 
     stopGoDown() {
         if (this.movement.y === this.velocity.y) {
             this.movement.y = 0
         }
+
+        this.keyDown.down = false
     }
 
     startGoLeft() {
         this.movement.x = -this.velocity.x
+        this.keyDown.left = true
     }
 
     stopGoLeft() {
         if (this.movement.x === -this.velocity.x) {
             this.movement.x = 0
         }
+
+        this.keyDown.left = false
     }
 
     startGoRight() {
         this.movement.x = this.velocity.x
+        this.keyDown.right = true
     }
 
     stopGoRight() {
         if (this.movement.x === this.velocity.x) {
             this.movement.x = 0
         }
+
+        this.keyDown.right = false
     }
 
     rotateToMousePos(mousePos) {
@@ -66,6 +84,22 @@ export default class ControllableObject extends CollisionnableObject {
     }
 
     move() {
+        if (this.movement.x === 0) {
+            if (this.keyDown.left) {
+                this.startGoLeft()
+            } else if (this.keyDown.right) {
+                this.startGoRight()
+            }
+        }
+
+        if (this.movement.y === 0) {
+            if (this.keyDown.up) {
+                this.startGoUp()
+            } else if (this.keyDown.down) {
+                this.startGoDown()
+            }
+        }
+
         const nextPosition = {
             x: this.position.x + this.movement.x,
             y: this.position.y + this.movement.y
