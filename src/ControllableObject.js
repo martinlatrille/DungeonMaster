@@ -2,8 +2,8 @@ import CollisionnableObject from './CollisionnableObject'
 import {windowWidth, windowHeight} from './config.js'
 
 export default class ControllableObject extends CollisionnableObject {
-    constructor(texture) {
-        super(texture)
+    constructor(texture, width, height) {
+        super(texture, width, height)
 
         this.velocity = {
             x: 1,
@@ -11,11 +11,6 @@ export default class ControllableObject extends CollisionnableObject {
         }
 
         this.movement = {
-            x: 0,
-            y: 0
-        }
-
-        this.size = {
             x: 0,
             y: 0
         }

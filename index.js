@@ -5,6 +5,8 @@ import {attachControls} from './src/commands'
 import HeroManager from './src/HeroManager'
 import EnemyManager from './src/EnemyManager'
 
+import HealthBar from './src/ui/HealthBar'
+
 // Create the renderer and add it to the body
 const renderer = new PIXI.autoDetectRenderer(window.width, window.height)
 document.body.appendChild(renderer.view)
@@ -32,11 +34,16 @@ enemyManager.addEnemy(600, 500)
 enemyManager.addEnemy(400, 600)
 enemyManager.addEnemy(600, 700)
 
+// Create the HealthBar
+const uiElements = [
+    new HealthBar(stage, heroManager.hero)
+]
+
 function hotRender() {
     heroManager.render()
     enemyManager.render()
 
-    // managers.forEach(manager => manager.render())
+    uiElements.forEach(elt => elt.render())
 }
 
 function play() {

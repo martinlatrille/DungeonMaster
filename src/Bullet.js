@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js'
-import RenderableObject from './RenderableObject'
+import CollisionnableObject from './CollisionnableObject'
 import {windowWidth, windowHeight} from './config.js'
 import Enemy from './Enemy'
 
 
-export default class Bullet extends RenderableObject {
+export default class Bullet extends CollisionnableObject {
     constructor(posX, posY, rotation) {
         const canvas = document.createElement('canvas')
 
@@ -26,10 +26,7 @@ export default class Bullet extends RenderableObject {
             damage: 20
         }
 
-        this.velocity = {
-            x: 30,
-            y: 30
-        }
+        this.speed = 20
 
         this.position.set(posX, posY)
         this.rotation = rotation
@@ -43,8 +40,8 @@ export default class Bullet extends RenderableObject {
     }
 
     move() {
-        this.position.x += Math.cos(this.rotation) * this.velocity.x
-        this.position.y += Math.sin(this.rotation) * this.velocity.y
+        this.position.x += Math.cos(this.rotation) * this.speed
+        this.position.y += Math.sin(this.rotation) * this.speed
 
         if (
             this.position.x > windowWidth ||

@@ -14,7 +14,7 @@ export default class Hero extends ControllableObject {
         ctx.fillStyle = color
         ctx.fill()
 
-        super(new PIXI.Texture(new PIXI.BaseTexture(canvas)))
+        super(new PIXI.Texture(new PIXI.BaseTexture(canvas)), width, height)
 
         this.state = {
             life: 100
@@ -31,7 +31,6 @@ export default class Hero extends ControllableObject {
     }
 
     shoot() {
-        console.log('shoot!')
         this.bulletManager.addBullet(this.position.x, this.position.y, this.rotation)
     }
 
