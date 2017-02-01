@@ -102,11 +102,11 @@ export default class CollisionableObject extends RenderableObject {
             y: this.position.y + this.movement.y + this.cineticForce.y
         }
 
-        if (nextPosition.x > 0 && nextPosition.x + this.size.x < windowWidth) {
+        if (nextPosition.x > 0 && nextPosition.x + this.size.x / 2 < windowWidth) {
             this.position.x = nextPosition.x
         }
 
-        if (nextPosition.y > 0 && nextPosition.y + this.size.y < windowHeight) {
+        if (nextPosition.y > 0 && nextPosition.y + this.size.y / 2 < windowHeight) {
             this.position.y = nextPosition.y
         }
     }
