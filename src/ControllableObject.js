@@ -1,16 +1,18 @@
-import CollisionnableObject from './CollisionnableObject'
+import CollisionableObject from './CollisionableObject'
 import {windowWidth, windowHeight} from './config.js'
 
-export default class ControllableObject extends CollisionnableObject {
+export default class ControllableObject extends CollisionableObject {
     constructor(texture, width, height) {
         super(texture, width, height)
 
-        this.velocity = {
-            x: 1,
-            y: 1
-        }
+        this.speed = 1
 
         this.movement = {
+            x: 0,
+            y: 0
+        }
+
+        this.desiredMovement = {
             x: 0,
             y: 0
         }
@@ -24,53 +26,53 @@ export default class ControllableObject extends CollisionnableObject {
     }
 
     startGoUp() {
-        this.movement.y = -this.velocity.y
+        this.desiredMovement.y = -this.speed
         this.keyDown.up = true
     }
 
     stopGoUp() {
-        if (this.movement.y === -this.velocity.y) {
-            this.movement.y = 0
+        if (this.desiredMovement.y === -this.speed) {
+            this.desiredMovement.y = 0
         }
 
         this.keyDown.up = false
     }
 
     startGoDown() {
-        this.movement.y = this.velocity.y
+        this.desiredMovement.y = this.speed
 
         this.keyDown.down = true
     }
 
     stopGoDown() {
-        if (this.movement.y === this.velocity.y) {
-            this.movement.y = 0
+        if (this.desiredMovement.y === this.speed) {
+            this.desiredMovement.y = 0
         }
 
         this.keyDown.down = false
     }
 
     startGoLeft() {
-        this.movement.x = -this.velocity.x
+        this.desiredMovement.x = -this.speed
         this.keyDown.left = true
     }
 
     stopGoLeft() {
-        if (this.movement.x === -this.velocity.x) {
-            this.movement.x = 0
+        if (this.desiredMovement.x === -this.speed) {
+            this.desiredMovement.x = 0
         }
 
         this.keyDown.left = false
     }
 
     startGoRight() {
-        this.movement.x = this.velocity.x
+        this.desiredMovement.x = this.speed
         this.keyDown.right = true
     }
 
     stopGoRight() {
-        if (this.movement.x === this.velocity.x) {
-            this.movement.x = 0
+        if (this.desiredMovement.x === this.speed) {
+            this.desiredMovement.x = 0
         }
 
         this.keyDown.right = false
@@ -84,7 +86,7 @@ export default class ControllableObject extends CollisionnableObject {
     }
 
     move() {
-        if (this.movement.x === 0) {
+        if (this.desiredMovement.x === 0) {
             if (this.keyDown.left) {
                 this.startGoLeft()
             } else if (this.keyDown.right) {
@@ -92,7 +94,7 @@ export default class ControllableObject extends CollisionnableObject {
             }
         }
 
-        if (this.movement.y === 0) {
+        if (this.desiredMovement.y === 0) {
             if (this.keyDown.up) {
                 this.startGoUp()
             } else if (this.keyDown.down) {
@@ -100,9 +102,18 @@ export default class ControllableObject extends CollisionnableObject {
             }
         }
 
+        this.movement = {
+            x: this.desiredMovement.x,
+            y: this.desiredMovement.y
+        }
+    }
+
+    applyMovement() {
+        super.applyMovement()
+
         const nextPosition = {
-            x: this.position.x + this.movement.x,
-            y: this.position.y + this.movement.y
+            x: this.position.x + this.movement.x + this.cineticForce.x,
+            y: this.position.y + this.movement.y + this.cineticForce.y
         }
 
         if (nextPosition.x > 0 && nextPosition.x + this.size.x < windowWidth) {

@@ -20,10 +20,8 @@ export default class Hero extends ControllableObject {
             life: 100
         }
 
-        this.velocity = {
-            x: 7,
-            y: 7
-        }
+        this.speed = 7
+        this.pushable = true
 
         this.position.set(posX, posY)
 
@@ -54,5 +52,11 @@ export default class Hero extends ControllableObject {
         super.move()
 
         this.bulletManager.move()
+    }
+
+    applyMovement() {
+        super.applyMovement()
+
+        this.bulletManager.applyMovement()
     }
 }

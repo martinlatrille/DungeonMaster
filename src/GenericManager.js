@@ -12,6 +12,10 @@ export default class GenericManager {
         this._children.forEach(child => child.move())
     }
 
+    applyMovement() {
+        this._children.forEach(child => child.applyMovement())
+    }
+
     collision() {
         this._children.forEach(child => child.collision(this._stage))
     }

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import CollisionnableObject from './CollisionnableObject'
+import CollisionnableObject from './CollisionableObject'
 import {windowWidth, windowHeight} from './config.js'
 import Enemy from './Enemy'
 
@@ -27,6 +27,7 @@ export default class Bullet extends CollisionnableObject {
         }
 
         this.speed = 20
+        this.pushable = false
 
         this.position.set(posX, posY)
         this.rotation = rotation
@@ -40,8 +41,15 @@ export default class Bullet extends CollisionnableObject {
     }
 
     move() {
-        this.position.x += Math.cos(this.rotation) * this.speed
-        this.position.y += Math.sin(this.rotation) * this.speed
+        this.movement = {
+            x: Math.cos(this.rotation) * this.speed,
+            y: Math.sin(this.rotation) * this.speed
+        }
+    }
+
+    applyMovement() {
+        this.position.x += this.movement.x
+        this.position.y += this.movement.y
 
         if (
             this.position.x > windowWidth ||

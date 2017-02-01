@@ -2,6 +2,8 @@ import * as PIXI from 'pixi.js'
 import {windowWidth, windowHeight} from './src/config.js'
 import {attachControls} from './src/commands'
 
+import {doAllCollisions} from './src/CollisionableObject'
+
 import HeroManager from './src/HeroManager'
 import EnemyManager from './src/EnemyManager'
 
@@ -48,10 +50,12 @@ function hotRender() {
 
 function play() {
     heroManager.move()
-    heroManager.collision()
-
     enemyManager.move()
-    enemyManager.collision()
+
+    doAllCollisions()
+
+    heroManager.applyMovement()
+    enemyManager.applyMovement()
 }
 
 /**
