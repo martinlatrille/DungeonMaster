@@ -21,7 +21,6 @@ export default class Hero extends ControllableObject {
         }
 
         this.speed = 7
-        this.pushable = true
 
         this.position.set(posX, posY)
 

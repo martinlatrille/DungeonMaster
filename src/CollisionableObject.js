@@ -1,4 +1,4 @@
-import {CINETIC_ABSORPTION} from './config'
+import {CINETIC_ABSORPTION, BASIC_PUSH_FORCE, windowHeight, windowWidth} from './config'
 import RenderableObject from './RenderableObject'
 
 export let COLLISIONABLES = []
@@ -47,7 +47,7 @@ function collision(obj1, obj2) {
                     }
 
                     const speedSumOnAxis = Math.abs(obj1.movement[axis]) + Math.abs(obj2.movement[axis])
-                    const pushForce = 3 + speedSumOnAxis
+                    const pushForce = BASIC_PUSH_FORCE + speedSumOnAxis
 
                     obj1.cineticForce[axis] = (relativePositionUnit[axis] > 0 ? -pushForce : pushForce)
                     obj2.cineticForce[axis] = (relativePositionUnit[axis] > 0 ? pushForce : -pushForce)
@@ -82,6 +82,8 @@ export default class CollisionableObject extends RenderableObject {
             y: 0
         }
 
+        this.pushable = true
+
         COLLISIONABLES.push(this)
     }
 
@@ -94,5 +96,18 @@ export default class CollisionableObject extends RenderableObject {
 
     applyMovement() {
         this.consumeCinetic()
+
+        const nextPosition = {
+            x: this.position.x + this.movement.x + this.cineticForce.x,
+            y: this.position.y + this.movement.y + this.cineticForce.y
+        }
+
+        if (nextPosition.x > 0 && nextPosition.x + this.size.x < windowWidth) {
+            this.position.x = nextPosition.x
+        }
+
+        if (nextPosition.y > 0 && nextPosition.y + this.size.y < windowHeight) {
+            this.position.y = nextPosition.y
+        }
     }
 }

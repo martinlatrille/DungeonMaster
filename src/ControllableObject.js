@@ -1,5 +1,4 @@
 import CollisionableObject from './CollisionableObject'
-import {windowWidth, windowHeight} from './config.js'
 
 export default class ControllableObject extends CollisionableObject {
     constructor(texture, width, height) {
@@ -26,12 +25,12 @@ export default class ControllableObject extends CollisionableObject {
     }
 
     startGoUp() {
-        this.desiredMovement.y = -this.speed
+        this.desiredMovement.y = -1
         this.keyDown.up = true
     }
 
     stopGoUp() {
-        if (this.desiredMovement.y === -this.speed) {
+        if (this.desiredMovement.y === -1) {
             this.desiredMovement.y = 0
         }
 
@@ -39,13 +38,13 @@ export default class ControllableObject extends CollisionableObject {
     }
 
     startGoDown() {
-        this.desiredMovement.y = this.speed
+        this.desiredMovement.y = 1
 
         this.keyDown.down = true
     }
 
     stopGoDown() {
-        if (this.desiredMovement.y === this.speed) {
+        if (this.desiredMovement.y === 1) {
             this.desiredMovement.y = 0
         }
 
@@ -53,12 +52,12 @@ export default class ControllableObject extends CollisionableObject {
     }
 
     startGoLeft() {
-        this.desiredMovement.x = -this.speed
+        this.desiredMovement.x = -1
         this.keyDown.left = true
     }
 
     stopGoLeft() {
-        if (this.desiredMovement.x === -this.speed) {
+        if (this.desiredMovement.x === -1) {
             this.desiredMovement.x = 0
         }
 
@@ -66,12 +65,12 @@ export default class ControllableObject extends CollisionableObject {
     }
 
     startGoRight() {
-        this.desiredMovement.x = this.speed
+        this.desiredMovement.x = 1
         this.keyDown.right = true
     }
 
     stopGoRight() {
-        if (this.desiredMovement.x === this.speed) {
+        if (this.desiredMovement.x === 1) {
             this.desiredMovement.x = 0
         }
 
@@ -103,25 +102,8 @@ export default class ControllableObject extends CollisionableObject {
         }
 
         this.movement = {
-            x: this.desiredMovement.x,
-            y: this.desiredMovement.y
-        }
-    }
-
-    applyMovement() {
-        super.applyMovement()
-
-        const nextPosition = {
-            x: this.position.x + this.movement.x + this.cineticForce.x,
-            y: this.position.y + this.movement.y + this.cineticForce.y
-        }
-
-        if (nextPosition.x > 0 && nextPosition.x + this.size.x < windowWidth) {
-            this.position.x = nextPosition.x
-        }
-
-        if (nextPosition.y > 0 && nextPosition.y + this.size.y < windowHeight) {
-            this.position.y = nextPosition.y
+            x: this.desiredMovement.x * (Math.abs(this.desiredMovement.y) ? this.speed / Math.sqrt(2) : this.speed),
+            y: this.desiredMovement.y * (Math.abs(this.desiredMovement.x) ? this.speed / Math.sqrt(2) : this.speed)
         }
     }
 }

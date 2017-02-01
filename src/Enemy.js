@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import {windowWidth, windowHeight} from './config'
+import {windowWidth} from './config'
 import CollisionnableObject, {COLLISIONABLES} from './CollisionableObject'
 import HitLabel from './ui/HitLabel'
 import Hero from './Hero'
@@ -29,7 +29,6 @@ export default class Enemy extends CollisionnableObject {
         }
 
         this.speed = 4
-        this.pushable = true
 
         this.sightDistance = 400
 
@@ -113,28 +112,10 @@ export default class Enemy extends CollisionnableObject {
             const vectorY = this.target.obj.position.y - this.position.y
             const vectorX = this.target.obj.position.x - this.position.x
 
-            const directionY = vectorY / Math.abs(vectorY)
-            const directionX = vectorX / Math.abs(vectorX)
+            const angle = Math.atan2(vectorY, vectorX)
 
-            this.movement.x = directionX * this.speed
-            this.movement.y = directionY * this.speed
-        }
-    }
-
-    applyMovement() {
-        super.applyMovement()
-
-        const nextPosition = {
-            x: this.position.x + this.movement.x + this.cineticForce.x,
-            y: this.position.y + this.movement.y + this.cineticForce.y
-        }
-
-        if (nextPosition.x > 0 && nextPosition.x + this.size.x / 2 <= windowWidth) {
-            this.position.x = nextPosition.x
-        }
-
-        if (nextPosition.y > 0 && nextPosition.y + this.size.y / 2 <= windowHeight) {
-            this.position.y = nextPosition.y
+            this.movement.x = Math.cos(angle) * this.speed
+            this.movement.y = Math.sin(angle) * this.speed
         }
     }
 }
