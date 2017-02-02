@@ -1,5 +1,9 @@
 let MANAGERS = []
 
+export function cleanManagers() {
+    MANAGERS.forEach(manager => manager.clean())
+}
+
 export default class GenericManager {
     constructor() {
         this._children = []
@@ -18,7 +22,7 @@ export default class GenericManager {
         this._children.forEach(child => child.applyMovement())
     }
 
-    render() {
+    clean() {
         this._children = this._children.filter(child => !child.isDestroyed)
     }
 }

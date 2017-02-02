@@ -30,10 +30,17 @@ export default class HealthBar {
     }
 
     update() {
-        if (this.hero.life !== this.currentValue) {
+        if (!this.hero) {
+            return
+        }
+
+        if (this.hero.life !== this.currentValue && this.hero.life > 0) {
             this.currentValue = this.hero.life
             const newWidth = this.originalWidth * (this.currentValue / this.originalValue)
             this.foreground.width = newWidth > 0 ? newWidth : 0
+        } else if (this.hero.life <= 0) {
+            this.hero = null
+            this.foreground.width = 0
         }
     }
 }

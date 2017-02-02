@@ -4,6 +4,7 @@ import {attachControls} from './src/commands'
 
 import {updateStage} from './src/RenderableObject'
 import {doAllCollisions} from './src/CollisionableObject'
+import {cleanManagers} from './src/GenericManager'
 
 import HeroManager from './src/HeroManager'
 import EnemySpawn from './src/EnemySpawn'
@@ -26,7 +27,7 @@ const stage = new PIXI.Container()
 
 // Create the Hero
 const heroManager = new HeroManager(stage)
-heroManager.addHero(100, 100)
+heroManager.addHero(windowWidth / 2, 100)
 attachControls(heroManager.hero)
 
 renderer.render(stage)
@@ -39,11 +40,6 @@ const uiElements = [
     new HealthBar(stage, heroManager.hero),
     new Timer(stage, -3)
 ]
-
-function render() {
-    updateStage(stage)
-    uiElements.forEach(elt => elt.update())
-}
 
 function play() {
     heroManager.move()
@@ -59,6 +55,15 @@ function play() {
     enemySpawn.state.manager.applyMovement()
 }
 
+function render() {
+    updateStage(stage)
+    uiElements.forEach(elt => elt.update())
+}
+
+function cleanup() {
+    cleanManagers()
+}
+
 /**
  * Updates 60times/second
  */
@@ -67,6 +72,7 @@ function gameLoop() {
 
     play()
     render()
+    cleanup()
 
     renderer.render(stage)
 }

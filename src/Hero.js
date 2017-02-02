@@ -39,7 +39,9 @@ export default class Hero extends ControllableObject {
         this.life += -damage
 
         if (this.life <= 0) {
+            this.life = 0
             this.isDestroyed = true
+            console.log("You're dead :/")
         }
 
         return damage

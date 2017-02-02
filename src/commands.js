@@ -46,6 +46,10 @@ export function keyboard(keyCode, repeat = false) {
 
 function attachMouse(controllableObject) {
     document.onmousemove = function (e) {
+        if (controllableObject.isDestroyed) {
+            return
+        }
+
         const mousePos = {
             x: e.pageX,
             y: e.pageY
@@ -55,6 +59,10 @@ function attachMouse(controllableObject) {
     }
 
     document.onclick = function (e) {
+        if (controllableObject.isDestroyed) {
+            return
+        }
+
         const button = e.buttons || e.which || e.button
 
         if (button === 1) {
