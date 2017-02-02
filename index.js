@@ -2,10 +2,11 @@ import * as PIXI from 'pixi.js'
 import {windowWidth, windowHeight} from './src/config.js'
 import {attachControls} from './src/commands'
 
+import {updateStage} from './src/RenderableObject'
 import {doAllCollisions} from './src/CollisionableObject'
 
 import HeroManager from './src/HeroManager'
-import EnemyManager from './src/EnemyManager'
+import EnemySpawn from './src/EnemySpawn'
 
 import HealthBar from './src/ui/HealthBar'
 
@@ -30,11 +31,7 @@ attachControls(heroManager.hero)
 renderer.render(stage)
 
 // Create the EnemyManager
-const enemyManager = new EnemyManager(stage)
-enemyManager.addEnemy(400, 400)
-enemyManager.addEnemy(600, 500)
-enemyManager.addEnemy(400, 600)
-enemyManager.addEnemy(600, 700)
+const enemySpawn = new EnemySpawn(windowWidth / 2, windowHeight - 100)
 
 // Create the HealthBar
 const uiElements = [
@@ -42,20 +39,22 @@ const uiElements = [
 ]
 
 function hotRender() {
-    heroManager.render()
-    enemyManager.render()
-
+    updateStage(stage)
     uiElements.forEach(elt => elt.render())
 }
 
 function play() {
     heroManager.move()
-    enemyManager.move()
+    enemySpawn.state.manager.move()
+
+    if (!enemySpawn.isDestroyed) {
+        enemySpawn.work()
+    }
 
     doAllCollisions()
 
     heroManager.applyMovement()
-    enemyManager.applyMovement()
+    enemySpawn.state.manager.applyMovement()
 }
 
 /**
@@ -64,8 +63,8 @@ function play() {
 function gameLoop() {
     requestAnimationFrame(gameLoop)
 
-    hotRender()
     play()
+    hotRender()
 
     renderer.render(stage)
 }

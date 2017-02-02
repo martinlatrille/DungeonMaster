@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import CollisionnableObject from './CollisionableObject'
 import {windowWidth, windowHeight} from './config.js'
-import Enemy from './Enemy'
+import Hero from './Hero'
 
 
 export default class Bullet extends CollisionnableObject {
@@ -34,7 +34,7 @@ export default class Bullet extends CollisionnableObject {
     }
 
     damage(object) {
-        if (object instanceof Enemy) {
+        if (!(object instanceof Hero)) {
             this.isDestroyed = true
             return object.takeDamage(this.state.damage)
         }

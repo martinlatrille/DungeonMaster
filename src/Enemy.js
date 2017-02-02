@@ -24,7 +24,7 @@ export default class Enemy extends CollisionnableObject {
         this.state = {
             direction: 'right',
             damage: 10,
-            life: 200,
+            life: 100,
             children: []
         }
 
@@ -65,7 +65,7 @@ export default class Enemy extends CollisionnableObject {
 
     _displayHitLabel() {
         this.addChild(new HitLabel(
-            this.mainSprite.position.x - 17,
+            this.mainSprite.position.x,
             this.mainSprite.position.y - this.size.y / 2 - 30
         ))
     }

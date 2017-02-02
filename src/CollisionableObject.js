@@ -5,13 +5,6 @@ export const AXIS = ['x', 'y']
 export const AXIS_FUNCTIONS = {x: Math.cos, y: Math.sin}
 export let COLLISIONABLES = []
 
-function getUnitVector(movement) {
-    return {
-        x: movement.x / Math.abs(movement.x),
-        y: movement.y / Math.abs(movement.y)
-    }
-}
-
 function sameSign(a, b) {
     return (a > 0 && b > 0) || (a < 0 && b < 0)
 }
@@ -35,11 +28,6 @@ function collision(obj1, obj2) {
             const relativePosition1to2 = {
                 x: obj2.position.x - obj1.position.x,
                 y: obj2.position.y - obj1.position.y
-            }
-
-            const relativePositionUnit = {
-                x: relativePosition1to2.x / Math.abs(relativePosition1to2.x || 1),
-                y: relativePosition1to2.y / Math.abs(relativePosition1to2.y || 1),
             }
 
             const relativeAngle1to2 = Math.atan2(relativePosition1to2.y, relativePosition1to2.x)
@@ -68,12 +56,12 @@ function collision(obj1, obj2) {
             if (obj2.pushable && obj1.pushable) {
 
                 AXIS.forEach(axis => {
-                    if (!relativePositionUnit[axis]) {
+                    if (!relativePosition1to2[axis]) {
                         return
                     }
 
-                    obj1.movement[axis] = sameSign(obj1.movement[axis], relativePositionUnit[axis]) ? 0 : obj1.movement[axis]
-                    obj2.movement[axis] = sameSign(obj2.movement[axis], relativePositionUnit[axis]) ? obj2.movement[axis] : 0
+                    obj1.movement[axis] = sameSign(obj1.movement[axis], relativePosition1to2[axis]) ? 0 : obj1.movement[axis]
+                    obj2.movement[axis] = sameSign(obj2.movement[axis], relativePosition1to2[axis]) ? obj2.movement[axis] : 0
                 })
             }
         }
@@ -98,6 +86,11 @@ export default class CollisionableObject extends RenderableObject {
         this.size = {
             x: width,
             y: height
+        }
+
+        this.movement = {
+            x: 0,
+            y: 0
         }
 
         this.cineticForce = {

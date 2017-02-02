@@ -12,6 +12,8 @@ export default class HitLabel extends PIXI.Text {
 
         this.x = posX
         this.y = posY
+
+        this.anchor.set(0.5, 0.5)
     }
 
     animate() {

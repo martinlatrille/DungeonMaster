@@ -45,10 +45,6 @@ export default class Hero extends ControllableObject {
         return damage
     }
 
-    render() {
-        this.bulletManager.render()
-    }
-
     move() {
         super.move()
 

@@ -1,5 +1,24 @@
 import * as PIXI from 'pixi.js'
 
+let RENDERABLES = []
+
+export function updateStage(stage) {
+    RENDERABLES.forEach(renderable => {
+        if (!renderable.isRendered && !stage.children.includes(renderable)) {
+            stage.addChild(renderable)
+            renderable.isRendered = true
+        }
+
+        if (renderable.isDestroyed && stage.children.includes(renderable)) {
+            stage.removeChild(renderable)
+        }
+
+        if (renderable.render) {
+            renderable.render()
+        }
+    })
+}
+
 export default class RenderableObject extends PIXI.Container {
     constructor(texture) {
         super()
@@ -14,6 +33,8 @@ export default class RenderableObject extends PIXI.Container {
         }
 
         this.mainSprite.anchor.set(0.5, 0.5)
+
+        RENDERABLES.push(this)
     }
 
     get isRendered() {
@@ -38,6 +59,7 @@ export default class RenderableObject extends PIXI.Container {
                 child.animate()
             }
         })
+
         this.children = this.children.filter(child => !child.isDestroyed)
     }
 }
