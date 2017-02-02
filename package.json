@@ -17,7 +17,7 @@
     "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
-    "start": "webpack-dev-server --content-base assets/ --hot --inline",
+    "start": "webpack-dev-server --content-base . --hot --inline",
     "babel": "babel --presets es2015 index.js -o assets/dist/main.bundle.js"
   },
   "license": "ISC"
