@@ -1,2 +1,2 @@
 # DungeonMaster
-PixiJS Playground
+[Play it!](https://martinlatrille.github.io/DungeonMaster/)
