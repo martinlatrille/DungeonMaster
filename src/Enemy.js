@@ -30,7 +30,7 @@ export default class Enemy extends CollisionnableObject {
 
         this.speed = 4
 
-        this.sightDistance = 400
+        this.sightDistance = 800
 
         this.position.set(posX, posY)
     }
@@ -54,7 +54,6 @@ export default class Enemy extends CollisionnableObject {
             console.log('Enemy destroyed!')
             this.isDestroyed = true
         } else {
-            console.log(`Enemy hit! Remaining life: ${this.life}`)
             this._displayHitLabel()
         }
 

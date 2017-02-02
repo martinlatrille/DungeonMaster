@@ -9,6 +9,7 @@ import HeroManager from './src/HeroManager'
 import EnemySpawn from './src/EnemySpawn'
 
 import HealthBar from './src/ui/HealthBar'
+import Timer from './src/ui/Timer'
 
 // Create the renderer and add it to the body
 const renderer = new PIXI.autoDetectRenderer(window.width, window.height)
@@ -35,12 +36,13 @@ const enemySpawn = new EnemySpawn(windowWidth / 2, windowHeight - 100)
 
 // Create the HealthBar
 const uiElements = [
-    new HealthBar(stage, heroManager.hero)
+    new HealthBar(stage, heroManager.hero),
+    new Timer(stage, -3)
 ]
 
-function hotRender() {
+function render() {
     updateStage(stage)
-    uiElements.forEach(elt => elt.render())
+    uiElements.forEach(elt => elt.update())
 }
 
 function play() {
@@ -64,7 +66,7 @@ function gameLoop() {
     requestAnimationFrame(gameLoop)
 
     play()
-    hotRender()
+    render()
 
     renderer.render(stage)
 }

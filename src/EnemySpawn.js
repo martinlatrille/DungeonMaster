@@ -35,8 +35,8 @@ export default class EnemySpawn extends CollisionableObject {
             life: 1000,
             direction,
             manager: new EnemyManager(),
-            spawnSpeed: 3,
-            spawnDecount: 3
+            spawnSpeed: 2, // in seconds
+            spawnDecount: 3 // in seconds
         }
 
         this.position.set(posX, posY)
@@ -72,6 +72,9 @@ export default class EnemySpawn extends CollisionableObject {
 
         newChild.cineticForce.y = (this.state.direction === 'top' ? -1 : 1)
             * Math.floor(Math.random() * 10 + 2)
+
+        newChild.cineticForce.x = Math.floor(Math.random() * 30 - 15)
+        newChild.state.direction = newChild.cineticForce.x > 0 ? 'right' : 'left'
 
         this.state.manager.addItem(newChild)
     }
