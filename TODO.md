@@ -2,7 +2,7 @@
 
 #### Phase 1
 - add death animation for enemies
-- add game manager (recreat enemies when they're all dead)
+- add game manager (recreate enemies when they're all dead)
 - add score counter
 - add timer
 - add enemy spawner

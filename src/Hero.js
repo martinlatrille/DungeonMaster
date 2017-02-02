@@ -41,6 +41,8 @@ export default class Hero extends ControllableObject {
         if (this.life <= 0) {
             this.isDestroyed = true
         }
+
+        return damage
     }
 
     render() {

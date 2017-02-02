@@ -5,6 +5,8 @@ export default class EnemyManager extends GenericManager{
     constructor(stage) {
         super(stage)
 
+        this._spawns = []
+
         this._defaultItemColor = 'green'
         this._defaultItemWidth = 30
         this._defaultItemHeight = 30

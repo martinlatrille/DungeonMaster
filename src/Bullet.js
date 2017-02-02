@@ -36,8 +36,10 @@ export default class Bullet extends CollisionnableObject {
     damage(object) {
         if (object instanceof Enemy) {
             this.isDestroyed = true
-            object.takeDamage(this.state.damage)
+            return object.takeDamage(this.state.damage)
         }
+
+        return 0
     }
 
     move() {

@@ -24,7 +24,7 @@ export default class Enemy extends CollisionnableObject {
         this.state = {
             direction: 'right',
             damage: 10,
-            life: 50,
+            life: 200,
             children: []
         }
 
@@ -41,8 +41,10 @@ export default class Enemy extends CollisionnableObject {
 
     damage(object) {
         if (object instanceof Hero) {
-            object.takeDamage(this.state.damage)
+            return object.takeDamage(this.state.damage)
         }
+
+        return 0
     }
 
     takeDamage(damage) {
@@ -53,15 +55,20 @@ export default class Enemy extends CollisionnableObject {
             this.isDestroyed = true
         } else {
             console.log(`Enemy hit! Remaining life: ${this.life}`)
-
-            this.addChild(new HitLabel(
-                this.mainSprite.position.x - 17,
-                this.mainSprite.position.y - this.size.y / 2 - 30
-            ))
+            this._displayHitLabel()
         }
+
+        return damage
     }
 
     get hasTarget() { return !!this.target.obj }
+
+    _displayHitLabel() {
+        this.addChild(new HitLabel(
+            this.mainSprite.position.x - 17,
+            this.mainSprite.position.y - this.size.y / 2 - 30
+        ))
+    }
 
     see() {
         let target = {
