@@ -3,12 +3,12 @@ import * as PIXI from 'pixi.js'
 export default class HitLabel extends PIXI.Text {
     constructor(posX, posY) {
         const options = {
-            fontFamily: "Impact",
-            fontSize: "20px",
+            fontFamily: "'Press Start 2P', Impact",
+            fontSize: "16px",
             fill: "white"
         }
 
-        super("H I T", options)
+        super("HIT", options)
 
         this.x = posX
         this.y = posY

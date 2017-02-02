@@ -7,7 +7,7 @@ export default class HealthBar {
     constructor(stage, hero) {
         this.hero = hero
         this.container = new PIXI.Container()
-        this.container.position.set(5, 5)
+        this.container.position.set(20, 20)
         stage.addChild(this.container)
 
         this.originalWidth = 194

@@ -9,14 +9,14 @@ function parseTime(time) {
     const minutes = Math.abs(Math.floor(time / 60) + (time < 0 ? 1 : 0))
     const seconds = Math.abs(Math.floor(time % 60))
 
-    return `${time < 0 ? '-' : ' '} ${minutes} : ${(seconds < 10 ? '0' : '') + seconds}`
+    return `${time < 0 ? '-' : ' '}${minutes}:${(seconds < 10 ? '0' : '') + seconds}`
 }
 
 export default class Timer extends PIXI.Text {
     constructor(stage, startTime) {
         const options = {
-            fontFamily: "Impact",
-            fontSize: "20px",
+            fontFamily: "'Press Start 2P', Impact",
+            fontSize: "16px",
             fill: "white"
         }
 
@@ -29,7 +29,7 @@ export default class Timer extends PIXI.Text {
             currentTime: startTime
         }
 
-        this.position.set(windowWidth - 100, 10)
+        this.position.set(windowWidth - 110, 20)
     }
 
     update() {
