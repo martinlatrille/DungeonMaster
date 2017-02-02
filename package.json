@@ -18,7 +18,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server --content-base . --hot --inline",
-    "babel": "babel --presets es2015 index.js -o assets/dist/main.bundle.js"
+    "babel": "babel --presets es2015 index.js -o assets/dist/main.bundle.js",
+    "build": "webpack --config=webpack.config.js -p"
   },
   "license": "ISC"
 }
