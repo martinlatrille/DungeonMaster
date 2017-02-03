@@ -25,87 +25,63 @@ renderer.resize(windowWidth, windowHeight)
 // Create the stage
 const stage = new PIXI.Container()
 
-// Create the Hero
-const heroManager = new HeroManager(stage)
-heroManager.addHero(windowWidth / 2, 100)
-attachControls(heroManager.hero)
+// Load the Hero spritesheet
+PIXI.loader
+    .add('heroSpritesheet', 'assets/img/hero-spritesheet.png')
+    .load(setup)
 
-renderer.render(stage)
-
-// Create the EnemyManager
-const enemySpawn = new EnemySpawn(windowWidth / 2, windowHeight - 100)
-
-// Create the HealthBar
-const uiElements = [
-    new HealthBar(stage, heroManager.hero),
-    new Timer(stage, -3)
-]
-
-function play() {
-    heroManager.move()
-    enemySpawn.state.manager.move()
-
-    if (!enemySpawn.isDestroyed) {
-        enemySpawn.work()
-    }
-
-    doAllCollisions()
-
-    heroManager.applyMovement()
-    enemySpawn.state.manager.applyMovement()
-}
-
-function render() {
-    updateStage(stage)
-    uiElements.forEach(elt => elt.update())
-}
-
-function cleanup() {
-    cleanManagers()
-}
-
-/**
- * Updates 60times/second
- */
-function gameLoop() {
-    requestAnimationFrame(gameLoop)
-
-    play()
-    render()
-    cleanup()
+function setup() {
+    // Create the Hero
+    const heroManager = new HeroManager(stage)
+    heroManager.addHero(windowWidth / 2, 100)
+    attachControls(heroManager.hero)
 
     renderer.render(stage)
+
+    // Create the EnemyManager
+    const enemySpawn = new EnemySpawn(windowWidth / 2, windowHeight - 100)
+
+    // Create the HealthBar
+    const uiElements = [
+        new HealthBar(stage, heroManager.hero),
+        new Timer(stage, -3)
+    ]
+
+    function play() {
+        heroManager.move()
+        enemySpawn.state.manager.move()
+
+        if (!enemySpawn.isDestroyed) {
+            enemySpawn.work()
+        }
+
+        doAllCollisions()
+
+        heroManager.applyMovement()
+        enemySpawn.state.manager.applyMovement()
+    }
+
+    function render() {
+        updateStage(stage)
+        uiElements.forEach(elt => elt.update())
+    }
+
+    function cleanup() {
+        cleanManagers()
+    }
+
+    /**
+     * Updates 60times/second
+     */
+    function gameLoop() {
+        requestAnimationFrame(gameLoop)
+
+        play()
+        render()
+        cleanup()
+
+        renderer.render(stage)
+    }
+
+    gameLoop()
 }
-
-gameLoop()
-
-
-// function setupSpritesheet(loader, resources) {
-//     let texture = loader.resources.spritesheet.texture
-//
-//     texture.frame = new Rectangle(0, 0, 180, 247)
-//
-//     character = new Sprite(texture)
-//
-//     character.position.set(300, 300)
-//     character.scale.set(0.5, 0.5)
-//
-//     stage.addChild(character)
-//     renderer.render(stage)
-// }
-
-// loader
-//     .add('spritesheet', 'img/spritesheet.png')
-//     .load(setupSpritesheet)
-
-// loader.add('character', 'img/character.png').load(function (loader, resources) {
-//     character = new PIXI.Sprite(resources.character.texture)
-//
-//     character.position.set(300, 300)
-//     character.scale.set(0.3, 0.3)
-//     character.anchor.set(0.5, 0.5)
-//
-//     stage.addChild(character)
-//
-//     animate()
-// })

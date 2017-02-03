@@ -55,7 +55,7 @@ function attachMouse(controllableObject) {
             y: e.pageY
         }
 
-        controllableObject.rotateToMousePos(mousePos)
+        controllableObject.setAngleToMousePos(mousePos)
     }
 
     document.onclick = function (e) {

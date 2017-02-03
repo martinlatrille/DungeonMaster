@@ -4,17 +4,14 @@ import BulletManager from './BulletManager'
 
 
 export default class Hero extends ControllableObject {
-    constructor(stage, posX, posY, color = "red", width = 20, height = 20) {
-        const canvas = document.createElement('canvas')
-        canvas.width = width
-        canvas.height = height
+    constructor(stage, posX, posY, width = 40, height = 45) {
+        const texture = PIXI.loader.resources.heroSpritesheet.texture
+        const frame = new PIXI.Rectangle(0, 0, 50, 50)
+        texture.frame = frame
 
-        const ctx = canvas.getContext('2d')
-        ctx.rect(0, 0, width, height)
-        ctx.fillStyle = color
-        ctx.fill()
+        super(texture, width, height)
 
-        super(new PIXI.Texture(new PIXI.BaseTexture(canvas)), width, height)
+        this.texture = texture
 
         this.state = {
             life: 100
@@ -25,10 +22,16 @@ export default class Hero extends ControllableObject {
         this.position.set(posX, posY)
 
         this.bulletManager = new BulletManager(stage)
+
+        this.animation = {
+            index: 0,
+            speed: 0.1,
+            ticker: 0
+        }
     }
 
     shoot() {
-        this.bulletManager.addBullet(this.position.x, this.position.y, this.rotation)
+        this.bulletManager.addBullet(this.position.x, this.position.y, this.angleToMouse)
     }
 
     get life() { return this.state.life }
@@ -49,6 +52,31 @@ export default class Hero extends ControllableObject {
 
     move() {
         super.move()
+
+        const angle = this.angleToMouse
+        let ySpritePos = 0
+
+        if (angle < -2 || angle > 2) {
+            ySpritePos = 50
+        } else if (angle > -1 && angle < 1) {
+            ySpritePos = 100
+        } else if (angle < -1 && angle > -2) {
+            ySpritePos = 150
+        }
+
+        let xSpritePos = 0
+
+        if (this.movement.x || this.movement.y) {
+            if (this.animation.ticker % (60 * this.animation.speed) === 0) {
+                this.animation.index = this.animation.index % 2 + 1
+            }
+
+            xSpritePos = this.animation.index * 50
+
+            this.animation.ticker += 1
+        }
+
+        this.texture.frame = new PIXI.Rectangle(xSpritePos, ySpritePos, 50, 50)
 
         this.bulletManager.move()
     }

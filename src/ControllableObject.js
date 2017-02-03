@@ -77,11 +77,11 @@ export default class ControllableObject extends CollisionableObject {
         this.keyDown.right = false
     }
 
-    rotateToMousePos(mousePos) {
+    setAngleToMousePos(mousePos) {
         const vectorY = mousePos.y - this.position.y
         const vectorX = mousePos.x - this.position.x
 
-        this.rotation = Math.atan2(vectorY, vectorX)
+        this.angleToMouse = Math.atan2(vectorY, vectorX)
     }
 
     move() {

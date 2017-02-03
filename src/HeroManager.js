@@ -1,7 +1,7 @@
 import GenericManager from './GenericManager'
 import Hero from './Hero'
 
-export default class HeroManager extends GenericManager{
+export default class HeroManager extends GenericManager {
     addHero(posX, posY) {
         super.addItem(new Hero(this._stage, posX, posY))
     }

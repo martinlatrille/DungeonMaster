@@ -23,7 +23,11 @@ export default class RenderableObject extends PIXI.Container {
     constructor(texture) {
         super()
 
-        this.mainSprite = new PIXI.Sprite(texture)
+        if (typeof texture === "string") {
+            this.mainSprite = new PIXI.Sprite.fromImage(texture)
+        } else {
+            this.mainSprite = new PIXI.Sprite(texture)
+        }
 
         this.addChild(this.mainSprite)
 
