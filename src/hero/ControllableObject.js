@@ -1,4 +1,4 @@
-import CollisionableObject from './CollisionableObject'
+import CollisionableObject from '../CollisionableObject'
 
 export default class ControllableObject extends CollisionableObject {
     constructor(texture, width, height) {

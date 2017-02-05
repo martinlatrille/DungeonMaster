@@ -1,4 +1,4 @@
-import GenericManager from './GenericManager'
+import GenericManager from '../GenericManager'
 import Enemy from './Enemy'
 
 export default class EnemyManager extends GenericManager {

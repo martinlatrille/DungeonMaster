@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
-import CollisionnableObject from './CollisionableObject'
-import {windowWidth, windowHeight} from './config.js'
+import CollisionnableObject from '../CollisionableObject'
+import {windowWidth, windowHeight} from '../config.js'
 import Hero from './Hero'
 
 

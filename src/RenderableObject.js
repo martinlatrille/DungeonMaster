@@ -20,14 +20,10 @@ export function updateStage(stage) {
 }
 
 export default class RenderableObject extends PIXI.Container {
-    constructor(texture) {
+    constructor(texture, addToStage = true) {
         super()
 
-        if (typeof texture === "string") {
-            this.mainSprite = new PIXI.Sprite.fromImage(texture)
-        } else {
-            this.mainSprite = new PIXI.Sprite(texture)
-        }
+        this.mainSprite = new PIXI.Sprite(texture)
 
         this.addChild(this.mainSprite)
 
@@ -38,7 +34,9 @@ export default class RenderableObject extends PIXI.Container {
 
         this.mainSprite.anchor.set(0.5, 0.5)
 
-        RENDERABLES.push(this)
+        if (addToStage) {
+            RENDERABLES.push(this)
+        }
     }
 
     get isRendered() {

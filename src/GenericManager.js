@@ -1,13 +1,15 @@
-let MANAGERS = []
-
-export function cleanManagers() {
-    MANAGERS.forEach(manager => manager.clean())
+export const allManagers = {
+    items: [],
+    clean: () => allManagers.items.forEach(manager => manager.clean()),
+    move: () => allManagers.items.forEach(manager => manager.move()),
+    applyMovement: () => allManagers.items.forEach(manager => manager.applyMovement()),
+    render: () => allManagers.items.forEach(manager => manager.render()),
 }
 
 export default class GenericManager {
     constructor() {
         this._children = []
-        MANAGERS.push(this)
+        allManagers.items.push(this)
     }
 
     addItem(item) {
@@ -15,11 +17,27 @@ export default class GenericManager {
     }
 
     move() {
-        this._children.forEach(child => child.move())
+        this._children.forEach(child => {
+            if (child.move) {
+                child.move()
+            }
+        })
     }
 
     applyMovement() {
-        this._children.forEach(child => child.applyMovement())
+        this._children.forEach(child => {
+            if (child.applyMovement) {
+                child.applyMovement()
+            }
+        })
+    }
+
+    render() {
+        this._children.forEach(child => {
+            if (child.render) {
+                child.render()
+            }
+        })
     }
 
     clean() {

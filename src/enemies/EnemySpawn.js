@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js'
-import CollisionableObject from './CollisionableObject'
+import CollisionableObject from '../CollisionableObject'
 import Enemy from './Enemy'
 import EnemyManager from './EnemyManager'
-import HitLabel from './ui/HitLabel'
+import HitLabel from '../ui/HitLabel'
 
 export default class EnemySpawn extends CollisionableObject {
     constructor(posX, posY, direction = "top") {

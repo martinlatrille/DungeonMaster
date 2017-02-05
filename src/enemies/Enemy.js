@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js'
-import {windowWidth} from './config'
-import CollisionnableObject, {COLLISIONABLES} from './CollisionableObject'
-import HitLabel from './ui/HitLabel'
-import Hero from './Hero'
+import {windowWidth} from '../config'
+import CollisionnableObject, {COLLISIONABLES} from '../CollisionableObject'
+import HitLabel from '../ui/HitLabel'
+import Hero from '../hero/Hero'
 
 export default class Enemy extends CollisionnableObject {
     constructor(color, width, height, posX, posY) {

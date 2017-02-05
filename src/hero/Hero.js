@@ -1,13 +1,13 @@
 import * as PIXI from 'pixi.js'
 import ControllableObject from './ControllableObject'
-import BulletManager from './BulletManager'
+import BasicGun from './weapons/BasicGun'
+import WeaponManager from './weapons/WeaponManager'
 
 
 export default class Hero extends ControllableObject {
-    constructor(stage, posX, posY, width = 40, height = 45) {
+    constructor(posX, posY, width = 40, height = 45) {
         const texture = PIXI.loader.resources.heroSpritesheet.texture
-        const frame = new PIXI.Rectangle(0, 0, 50, 50)
-        texture.frame = frame
+        texture.frame = new PIXI.Rectangle(0, 0, 50, 50)
 
         super(texture, width, height)
 
@@ -21,7 +21,8 @@ export default class Hero extends ControllableObject {
 
         this.position.set(posX, posY)
 
-        this.bulletManager = new BulletManager(stage)
+        this.weaponManager = new WeaponManager()
+        this.weaponManager.addItem(new BasicGun(this))
 
         this.animation = {
             index: 0,
@@ -31,7 +32,7 @@ export default class Hero extends ControllableObject {
     }
 
     shoot() {
-        this.bulletManager.addBullet(this.position.x, this.position.y, this.angleToMouse)
+        this.weaponManager.equippedWeapon.shoot()
     }
 
     get life() { return this.state.life }
@@ -77,13 +78,6 @@ export default class Hero extends ControllableObject {
         }
 
         this.texture.frame = new PIXI.Rectangle(xSpritePos, ySpritePos, 50, 50)
-
-        this.bulletManager.move()
-    }
-
-    applyMovement() {
-        super.applyMovement()
-
-        this.bulletManager.applyMovement()
+        this.weaponManager.equippedWeapon.rotation = this.angleToMouse
     }
 }

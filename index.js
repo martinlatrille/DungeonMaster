@@ -1,13 +1,13 @@
 import * as PIXI from 'pixi.js'
 import {windowWidth, windowHeight} from './src/config.js'
-import {attachControls} from './src/commands'
+import {attachControls} from './src/hero/commands'
 
 import {updateStage} from './src/RenderableObject'
 import {doAllCollisions} from './src/CollisionableObject'
-import {cleanManagers} from './src/GenericManager'
+import {allManagers} from './src/GenericManager'
 
-import HeroManager from './src/HeroManager'
-import EnemySpawn from './src/EnemySpawn'
+import HeroManager from './src/hero/HeroManager'
+import EnemySpawn from './src/enemies/EnemySpawn'
 
 import HealthBar from './src/ui/HealthBar'
 import Timer from './src/ui/Timer'
@@ -27,6 +27,7 @@ const stage = new PIXI.Container()
 
 // Load the Hero spritesheet
 PIXI.loader
+    .add('basicGun', 'assets/img/gun-1.png')
     .add('heroSpritesheet', 'assets/img/hero-spritesheet.png')
     .load(setup)
 
@@ -48,8 +49,7 @@ function setup() {
     ]
 
     function play() {
-        heroManager.move()
-        enemySpawn.state.manager.move()
+        allManagers.move()
 
         if (!enemySpawn.isDestroyed) {
             enemySpawn.work()
@@ -57,17 +57,17 @@ function setup() {
 
         doAllCollisions()
 
-        heroManager.applyMovement()
-        enemySpawn.state.manager.applyMovement()
+        allManagers.applyMovement()
     }
 
     function render() {
         updateStage(stage)
+        allManagers.render()
         uiElements.forEach(elt => elt.update())
     }
 
     function cleanup() {
-        cleanManagers()
+        allManagers.clean()
     }
 
     /**
