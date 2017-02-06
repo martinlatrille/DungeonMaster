@@ -12,10 +12,6 @@ export function updateStage(stage) {
         if (renderable.isDestroyed && stage.children.includes(renderable)) {
             stage.removeChild(renderable)
         }
-
-        if (renderable.render) {
-            renderable.render()
-        }
     })
 }
 

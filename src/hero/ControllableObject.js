@@ -105,5 +105,8 @@ export default class ControllableObject extends CollisionableObject {
             x: this.desiredMovement.x * (Math.abs(this.desiredMovement.y) ? this.speed / Math.sqrt(2) : this.speed),
             y: this.desiredMovement.y * (Math.abs(this.desiredMovement.x) ? this.speed / Math.sqrt(2) : this.speed)
         }
+
+        this.movement.x += this.cineticForce.x
+        this.movement.y += this.cineticForce.y
     }
 }

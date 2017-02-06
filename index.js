@@ -12,6 +12,8 @@ import EnemySpawn from './src/enemies/EnemySpawn'
 import HealthBar from './src/ui/HealthBar'
 import Timer from './src/ui/Timer'
 
+import Room from './src/map/Room'
+
 // Create the renderer and add it to the body
 const renderer = new PIXI.autoDetectRenderer(window.width, window.height)
 document.body.appendChild(renderer.view)
@@ -29,18 +31,25 @@ const stage = new PIXI.Container()
 PIXI.loader
     .add('basicGun', 'assets/img/gun-1.png')
     .add('heroSpritesheet', 'assets/img/hero-spritesheet.png')
+    .add('ground', 'assets/img/ground.png')
+    .add('wall', 'assets/img/wall.png')
+    .add('wallTop', 'assets/img/wall-top.png')
     .load(setup)
 
 function setup() {
-    // Create the Hero
-    const heroManager = new HeroManager(stage)
-    heroManager.addHero(windowWidth / 2, 100)
+    // Create the Room
+    const room = new Room(Math.ceil(windowWidth / 100), Math.ceil(windowHeight / 100), 0, 100)
+    stage.addChild(room)
+
+    // Create the Heroa
+    const heroManager = new HeroManager()
+    heroManager.addHero(windowWidth / 2, 200)
     attachControls(heroManager.hero)
 
     renderer.render(stage)
 
     // Create the EnemyManager
-    const enemySpawn = new EnemySpawn(windowWidth / 2, windowHeight - 100)
+    const enemySpawn = new EnemySpawn(windowWidth / 2, windowHeight - 230)
 
     // Create the HealthBar
     const uiElements = [
@@ -63,6 +72,7 @@ function setup() {
     function render() {
         updateStage(stage)
         allManagers.render()
+        enemySpawn.render()
         uiElements.forEach(elt => elt.update())
     }
 

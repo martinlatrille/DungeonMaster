@@ -7,7 +7,7 @@ import WeaponManager from './weapons/WeaponManager'
 export default class Hero extends ControllableObject {
     constructor(posX, posY, width = 40, height = 45) {
         const texture = PIXI.loader.resources.heroSpritesheet.texture
-        texture.frame = new PIXI.Rectangle(0, 0, 50, 50)
+        texture.frame = new PIXI.Rectangle(0, 0, 50, 58)
 
         super(texture, width, height)
 
@@ -27,7 +27,9 @@ export default class Hero extends ControllableObject {
         this.animation = {
             index: 0,
             speed: 0.1,
-            ticker: 0
+            ticker: 0,
+            xSpriteSize: 50,
+            ySpriteSize: 58
         }
     }
 
@@ -54,15 +56,19 @@ export default class Hero extends ControllableObject {
     move() {
         super.move()
 
+        this.weaponManager.equippedWeapon.rotation = this.angleToMouse
+    }
+
+    render() {
         const angle = this.angleToMouse
         let ySpritePos = 0
 
         if (angle < -2 || angle > 2) {
-            ySpritePos = 50
+            ySpritePos = this.animation.ySpriteSize
         } else if (angle > -1 && angle < 1) {
-            ySpritePos = 100
+            ySpritePos = 2 * this.animation.ySpriteSize
         } else if (angle < -1 && angle > -2) {
-            ySpritePos = 150
+            ySpritePos = 3 * this.animation.ySpriteSize
         }
 
         let xSpritePos = 0
@@ -72,12 +78,13 @@ export default class Hero extends ControllableObject {
                 this.animation.index = this.animation.index % 2 + 1
             }
 
-            xSpritePos = this.animation.index * 50
+            xSpritePos = this.animation.index * this.animation.xSpriteSize
 
             this.animation.ticker += 1
         }
 
-        this.texture.frame = new PIXI.Rectangle(xSpritePos, ySpritePos, 50, 50)
-        this.weaponManager.equippedWeapon.rotation = this.angleToMouse
+        this.texture.frame = new PIXI.Rectangle(
+            xSpritePos, ySpritePos,
+            this.animation.xSpriteSize, this.animation.ySpriteSize)
     }
 }

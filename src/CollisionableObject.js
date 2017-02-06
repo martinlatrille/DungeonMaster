@@ -33,6 +33,7 @@ function collision(obj1, obj2) {
             const relativeAngle1to2 = Math.atan2(relativePosition1to2.y, relativePosition1to2.x)
             const relativeAngle2to1 = Math.atan2(-relativePosition1to2.y, -relativePosition1to2.x)
 
+            // Damage-related
             if (obj2.damage && obj1.takeDamage) {
                 const damageDone = obj2.damage(obj1)
 
@@ -53,6 +54,7 @@ function collision(obj1, obj2) {
                 }
             }
 
+            // Cinetic force exercice
             if (obj2.pushable && obj1.pushable) {
 
                 AXIS.forEach(axis => {
@@ -118,12 +120,7 @@ export default class CollisionableObject extends RenderableObject {
             y: this.position.y + this.movement.y + this.cineticForce.y
         }
 
-        if (nextPosition.x > 0 && nextPosition.x + this.size.x / 2 < windowWidth) {
-            this.position.x = nextPosition.x
-        }
-
-        if (nextPosition.y > 0 && nextPosition.y + this.size.y / 2 < windowHeight) {
-            this.position.y = nextPosition.y
-        }
+        this.position.x = nextPosition.x
+        this.position.y = nextPosition.y
     }
 }
