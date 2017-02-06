@@ -3,7 +3,7 @@ import BulletManager from './../BulletManager'
 
 export default class Weapon extends RenderableObject {
     constructor(texture, hero) {
-        super(texture, false)
+        super(texture, 1, false)
 
         this.position.set(
             (hero.size.x / 2) + 10,

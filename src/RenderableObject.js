@@ -4,22 +4,32 @@ let RENDERABLES = []
 
 export function updateStage(stage) {
     RENDERABLES.forEach(renderable => {
+        let needSort = false
+
         if (!renderable.isRendered && !stage.children.includes(renderable)) {
             stage.addChild(renderable)
             renderable.isRendered = true
+            needSort = true
         }
 
         if (renderable.isDestroyed && stage.children.includes(renderable)) {
             stage.removeChild(renderable)
+            needSort = true
+        }
+
+        if (needSort) {
+            stage.children = stage.children.sort(child => child.zIndex)
         }
     })
 }
 
 export default class RenderableObject extends PIXI.Container {
-    constructor(texture, addToStage = true) {
+    constructor(texture, zIndex = 1, addToStage = true) {
         super()
 
         this.mainSprite = new PIXI.Sprite(texture)
+
+        this.zIndex = zIndex
 
         this.addChild(this.mainSprite)
 

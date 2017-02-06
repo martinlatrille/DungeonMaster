@@ -22,6 +22,7 @@ export default class Timer extends PIXI.Text {
 
         super(parseTime(startTime), options)
 
+        this.zIndex = 10
         stage.addChild(this)
 
         this.state = {
