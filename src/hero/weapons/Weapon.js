@@ -27,8 +27,8 @@ export default class Weapon extends RenderableObject {
     }
 
     render() {
-        const shouldBeOnLeft = this.rotation < -1.8 || this.rotation > 1.8
-        const shouldBeOnRight = this.rotation > -1.2 && this.rotation < 1.2
+        const shouldBeOnLeft = this.rotation < -2 || this.rotation > 2
+        const shouldBeOnRight = this.rotation > -1 && this.rotation < 1
         const isOnLeft = this.position.x < 0
 
         const goToLeft = shouldBeOnLeft && !isOnLeft

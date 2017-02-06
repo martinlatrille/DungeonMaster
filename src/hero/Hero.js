@@ -63,12 +63,16 @@ export default class Hero extends ControllableObject {
         const angle = this.angleToMouse
         let ySpritePos = 0
 
-        if (angle < -2 || angle > 2) {
+        if (angle > 2) {
             ySpritePos = this.animation.ySpriteSize
-        } else if (angle > -1 && angle < 1) {
+        } else if (angle > 0 && angle < 1) {
             ySpritePos = 2 * this.animation.ySpriteSize
-        } else if (angle < -1 && angle > -2) {
+        } else if (angle < -2) {
             ySpritePos = 3 * this.animation.ySpriteSize
+        } else if (angle < 0 && angle > -1) {
+            ySpritePos = 4 * this.animation.ySpriteSize
+        } else if (angle < -1 && angle > -2) {
+            ySpritePos = 5 * this.animation.ySpriteSize
         }
 
         let xSpritePos = 0
