@@ -34,6 +34,7 @@ PIXI.loader
     .add('ground', 'assets/img/ground.png')
     .add('wall', 'assets/img/wall.png')
     .add('wallTop', 'assets/img/wall-top.png')
+    .add('wallCorner', 'assets/img/wall-corner.png')
     .load(setup)
 
 function setup() {

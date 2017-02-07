@@ -2,7 +2,11 @@ import * as PIXI from 'pixi.js'
 import CollisionableObject from './../CollisionableObject'
 import {TILE_SIZE, PI} from './../config'
 
-const WALL_TYPES = ['front', 'left', 'right', 'top', 'revert-top']
+const WALL_TYPES = [
+    'front',
+    'left', 'right', 'top', 'revert-top',
+    'corner-bottom-right', 'corner-bottom-left', 'corner-top-right', 'corner-top-left'
+]
 
 export default class Wall extends CollisionableObject {
     constructor(type) {
@@ -10,6 +14,10 @@ export default class Wall extends CollisionableObject {
         let rotation = 0
         let height = TILE_SIZE
         let zIndex = 0
+        let scale = {
+            x: 1,
+            y: 1
+        }
 
         switch (type) {
             case 'front':
@@ -35,6 +43,22 @@ export default class Wall extends CollisionableObject {
                 rotation = - PI
                 zIndex = 4
                 break
+            case 'corner-bottom-left':
+                texture = PIXI.loader.resources.wallCorner.texture
+                break
+            case 'corner-bottom-right':
+                texture = PIXI.loader.resources.wallCorner.texture
+                scale.x = -1
+                break
+            case 'corner-top-left':
+                texture = PIXI.loader.resources.wallCorner.texture
+                scale.y = -1
+                break
+            case 'corner-top-right':
+                texture = PIXI.loader.resources.wallCorner.texture
+                scale.x = -1
+                scale.y = -1
+                break
             default:
                 return null
         }
@@ -46,6 +70,7 @@ export default class Wall extends CollisionableObject {
 
         this.rotation = rotation
         this.zIndex = zIndex
+        this.scale = scale
     }
 
     takeDamage() {}

@@ -18,7 +18,7 @@ export function updateStage(stage) {
         }
 
         if (needSort) {
-            stage.children = stage.children.sort(child => child.zIndex)
+            stage.children = stage.children.sort(child => child.position.y).sort(child => child.zIndex)
         }
     })
 }

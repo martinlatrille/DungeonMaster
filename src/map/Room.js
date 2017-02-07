@@ -18,8 +18,14 @@ export default class Room extends PIXI.Container {
             for (let j = 0; j < width; j++) {
                 let newChild = null
 
-                if (i === 0 && j > 0 && j < width - 1) {
-                    newChild = new Wall('top')
+                if (i === 0) {
+                    if (j === 0) {
+                        newChild = new Wall('corner-bottom-right')
+                    } else if (j === width - 1) {
+                        newChild = new Wall('corner-bottom-left')
+                    } else if (j > 0 && j < width - 1) {
+                        newChild = new Wall('top')
+                    }
                 } else if (i === 1 && j > 0 && j < width - 1) {
                     newChild = new Wall('front')
                 } else if (i > 0 && i < height - 1) {
@@ -34,8 +40,14 @@ export default class Room extends PIXI.Container {
                             newChild = new RenderableObject(groundTexture)
                         }
                     }
-                } else if (i === height - 1 && j > 0 && j < width - 1) {
-                    newChild = new Wall('revert-top')
+                } else if (i === height - 1) {
+                    if (j === 0) {
+                        newChild = new Wall('corner-top-right')
+                    } else if (j === width - 1) {
+                        newChild = new Wall('corner-top-left')
+                    } else if (j > 0 && j < width - 1) {
+                        newChild = new Wall('revert-top')
+                    }
                 }
 
                 if (newChild) {
@@ -45,7 +57,5 @@ export default class Room extends PIXI.Container {
                 }
             }
         }
-
-        console.log(this.children.length)
     }
 }
