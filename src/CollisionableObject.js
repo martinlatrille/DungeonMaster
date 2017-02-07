@@ -5,8 +5,24 @@ export const AXIS = ['x', 'y']
 export const AXIS_FUNCTIONS = {x: Math.cos, y: Math.sin}
 export let COLLISIONABLES = []
 
-function sameSign(a, b) {
-    return (a > 0 && b > 0) || (a < 0 && b < 0)
+function sameSign(movement, relativePosition) {
+    return (movement > 0 && relativePosition > 0)
+        || (movement < 0 && relativePosition < 0)
+}
+
+function areCollisioning(obj1, obj2, axis = null) {
+    const areInXHitbox = Math.abs(obj2.position.x - obj1.position.x) < (obj1.size.x + obj2.size.x) / 2
+    const areInYHitbox = Math.abs(obj2.position.y - obj1.position.y) < (obj1.size.y + obj2.size.y) / 2
+
+    if (axis === 'x') {
+        return areInXHitbox
+    }
+
+    if (axis === 'y') {
+        return areInYHitbox
+    }
+
+    return areInXHitbox && areInYHitbox
 }
 
 function collision(obj1, obj2) {
@@ -21,10 +37,23 @@ function collision(obj1, obj2) {
     }
 
     if (obj2 !== obj1) {
-        const inXHitbox = Math.abs(obj2.position.x - obj1.position.x) < (obj1.size.x + obj2.size.x) / 2
-        const inYHitbox = Math.abs(obj2.position.y - obj1.position.y) < (obj1.size.y + obj2.size.y) / 2
+        const nextObj1 = {
+            size: obj1.size,
+            position: {
+                x: obj1.position.x + obj1.movement.x + obj1.cineticForce.x,
+                y: obj1.position.y + obj1.movement.y + obj1.cineticForce.y
+            },
+        }
 
-        if (inXHitbox && inYHitbox) {
+        const nextObj2 = {
+            size: obj2.size,
+            position: {
+                x: obj2.position.x + obj2.movement.x + obj2.cineticForce.x,
+                y: obj2.position.y + obj2.movement.y + obj2.cineticForce.y
+            }
+        }
+
+        if (areCollisioning(nextObj1, nextObj2)) {
             const relativePosition1to2 = {
                 x: obj2.position.x - obj1.position.x,
                 y: obj2.position.y - obj1.position.y
@@ -37,6 +66,7 @@ function collision(obj1, obj2) {
             if (obj2.damage && obj1.takeDamage) {
                 const damageDone = obj2.damage(obj1)
 
+                // Cinetic-force exercice
                 if (damageDone && obj1.pushable) {
                     AXIS.forEach(axis => {
                         obj1.cineticForce[axis] = - BASIC_PUSH_FORCE * AXIS_FUNCTIONS[axis](relativeAngle1to2)
@@ -54,16 +84,25 @@ function collision(obj1, obj2) {
                 }
             }
 
-            // Cinetic force exercice
+            // Physical blocking
             if (obj2.pushable && obj1.pushable) {
-
                 AXIS.forEach(axis => {
                     if (!relativePosition1to2[axis]) {
                         return
                     }
 
-                    obj1.movement[axis] = sameSign(obj1.movement[axis], relativePosition1to2[axis]) ? 0 : obj1.movement[axis]
-                    obj2.movement[axis] = sameSign(obj2.movement[axis], relativePosition1to2[axis]) ? obj2.movement[axis] : 0
+                    const otherAxis = axis === 'x' ? 'y' : 'x'
+
+                    const singleAxisNextObj1 = Object.assign({}, nextObj1)
+                    singleAxisNextObj1.position[otherAxis] = obj1.position[otherAxis]
+
+                    const singleAxisNextObj2 = Object.assign({}, nextObj2)
+                    singleAxisNextObj2.position[otherAxis] = obj2.position[otherAxis]
+
+                    if (areCollisioning(singleAxisNextObj1, singleAxisNextObj2, otherAxis)) {
+                        obj1.movement[axis] = sameSign(obj1.movement[axis], relativePosition1to2[axis]) ? 0 : obj1.movement[axis]
+                        obj2.movement[axis] = sameSign(obj2.movement[axis], relativePosition1to2[axis]) ? obj2.movement[axis] : 0
+                    }
                 })
             }
         }
@@ -76,8 +115,8 @@ export function doAllCollisions() {
     while (toCollision.length) {
         const obj1 = toCollision[0]
 
-        toCollision.forEach(obj2 => collision(obj1, obj2))
         toCollision = toCollision.filter(item => item !== obj1)
+        toCollision.forEach(obj2 => collision(obj1, obj2))
     }
 }
 
@@ -116,8 +155,8 @@ export default class CollisionableObject extends RenderableObject {
         this.consumeCinetic()
 
         const nextPosition = {
-            x: this.position.x + this.movement.x + this.cineticForce.x,
-            y: this.position.y + this.movement.y + this.cineticForce.y
+            x: this.position.x + this.movement.x,
+            y: this.position.y + this.movement.y
         }
 
         this.position.x = nextPosition.x

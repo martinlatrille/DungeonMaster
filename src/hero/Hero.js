@@ -31,6 +31,8 @@ export default class Hero extends ControllableObject {
             xSpriteSize: 50,
             ySpriteSize: 58
         }
+
+        this.zIndex = 1
     }
 
     shoot() {

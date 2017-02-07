@@ -28,6 +28,7 @@ export default class Bullet extends CollisionnableObject {
 
         this.speed = 20
         this.pushable = false
+        this.resistOnCollision = false
 
         this.position.set(posX, posY)
         this.rotation = rotation

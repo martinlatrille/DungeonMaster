@@ -1,7 +1,8 @@
 import * as PIXI from 'pixi.js'
 import RenderableObject from './../RenderableObject'
-import CollisionnableObject from './../CollisionableObject'
-import {TILE_SIZE, PI} from './../config'
+import {TILE_SIZE} from './../config'
+
+import Wall from './Wall'
 
 export default class Room extends PIXI.Container {
     constructor(width, height, posX, posY) {
@@ -11,8 +12,6 @@ export default class Room extends PIXI.Container {
 
         this.position.set(posX, posY)
 
-        const wallTopTexture = PIXI.loader.resources.wallTop.texture
-        const wallTexture = PIXI.loader.resources.wall.texture
         const groundTexture = PIXI.loader.resources.ground.texture
 
         for (let i = 0; i < height; i++) {
@@ -20,26 +19,23 @@ export default class Room extends PIXI.Container {
                 let newChild = null
 
                 if (i === 0 && j > 0 && j < width - 1) {
-                    newChild = new CollisionnableObject(wallTopTexture, TILE_SIZE, TILE_SIZE)
+                    newChild = new Wall('top')
                 } else if (i === 1 && j > 0 && j < width - 1) {
-                    newChild = new CollisionnableObject(wallTexture, TILE_SIZE, TILE_SIZE)
+                    newChild = new Wall('front')
                 } else if (i > 0 && i < height - 1) {
                     if (j === 0) {
-                        newChild = new CollisionnableObject(wallTopTexture, TILE_SIZE, TILE_SIZE)
-                        newChild.rotation = - PI / 2
+                        newChild = new Wall('right')
                     } else if (j === width - 1) {
-                        newChild = new CollisionnableObject(wallTopTexture, TILE_SIZE, TILE_SIZE)
-                        newChild.rotation = PI / 2
+                        newChild = new Wall('left')
                     } else {
                         if (i === 1) {
-                            newChild = new CollisionnableObject(wallTexture, TILE_SIZE, TILE_SIZE)
+                            newChild = new Wall('front')
                         } else {
                             newChild = new RenderableObject(groundTexture)
                         }
                     }
                 } else if (i === height - 1 && j > 0 && j < width - 1) {
-                    newChild = new CollisionnableObject(wallTopTexture, TILE_SIZE, TILE_SIZE)
-                    newChild.rotation = -PI
+                    newChild = new Wall('revert-top')
                 }
 
                 if (newChild) {
