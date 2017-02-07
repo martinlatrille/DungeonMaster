@@ -71,7 +71,7 @@ export default class EnemySpawn extends CollisionableObject {
         )
 
         newChild.cineticForce.y = (this.state.direction === 'top' ? -1 : 1)
-            * Math.floor(Math.random() * 10 + 2)
+            * Math.floor(Math.random() * 10 + 5)
 
         newChild.cineticForce.x = Math.floor(Math.random() * 30 - 15)
         newChild.state.direction = newChild.cineticForce.x > 0 ? 'right' : 'left'

@@ -120,8 +120,8 @@ export default class Enemy extends CollisionnableObject {
 
             const angle = Math.atan2(vectorY, vectorX)
 
-            this.movement.x = Math.cos(angle) * this.speed + this.cineticForce.x
-            this.movement.y = Math.sin(angle) * this.speed + this.cineticForce.y
+            this.movement.x = Math.cos(angle) * this.speed
+            this.movement.y = Math.sin(angle) * this.speed
         }
     }
 

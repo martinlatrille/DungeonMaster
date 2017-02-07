@@ -151,9 +151,13 @@ export default class CollisionableObject extends RenderableObject {
         }
     }
 
-    applyMovement() {
+    applyForces() {
         this.consumeCinetic()
+        this.movement.x += this.cineticForce.x
+        this.movement.y += this.cineticForce.y
+    }
 
+    applyMovement() {
         const nextPosition = {
             x: this.position.x + this.movement.x,
             y: this.position.y + this.movement.y

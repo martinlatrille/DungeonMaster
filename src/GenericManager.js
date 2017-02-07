@@ -21,6 +21,10 @@ export default class GenericManager {
             if (child.move) {
                 child.move()
             }
+
+            if (child.applyForces) {
+                child.applyForces()
+            }
         })
     }
 
