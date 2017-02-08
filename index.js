@@ -31,6 +31,7 @@ const stage = new PIXI.Container()
 PIXI.loader
     .add('basicGun', 'assets/img/gun-1.png')
     .add('heroSpritesheet', 'assets/img/hero-spritesheet.png')
+    .add('zombieSpritesheet', 'assets/img/zombie-spritesheet.png')
     .add('ground', 'assets/img/ground.png')
     .add('wall', 'assets/img/wall.png')
     .add('wallTop', 'assets/img/wall-top.png')

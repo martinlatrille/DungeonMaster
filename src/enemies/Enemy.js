@@ -5,27 +5,31 @@ import HitLabel from '../ui/HitLabel'
 import Hero from '../hero/Hero'
 
 export default class Enemy extends CollisionnableObject {
-    constructor(color, width, height, posX, posY) {
-        const canvas = document.createElement('canvas')
-        canvas.width = width
-        canvas.height = height
-
-        const ctx = canvas.getContext('2d')
-        ctx.rect(0, 0, width, height)
-        ctx.fillStyle = color
-        ctx.fill()
+    constructor(width, height, posX, posY) {
+        const texture = PIXI.loader.resources.zombieSpritesheet.texture
+        texture.frame = new PIXI.Rectangle(0, 0, 50, 58)
 
         super(
-            new PIXI.Texture(new PIXI.BaseTexture(canvas)),
+            texture,
             width,
             height
         )
+
+        this.texture = texture
 
         this.state = {
             direction: 'right',
             damage: 10,
             life: 100,
             children: []
+        }
+
+        this.animation = {
+            index: 0,
+            speed: 0.1,
+            ticker: 0,
+            xSpriteSize: 50,
+            ySpriteSize: 58
         }
 
         this.speed = 4
@@ -122,6 +126,7 @@ export default class Enemy extends CollisionnableObject {
 
             this.movement.x = Math.cos(angle) * this.speed
             this.movement.y = Math.sin(angle) * this.speed
+            this.angleToTarget = angle
         }
     }
 
@@ -131,5 +136,45 @@ export default class Enemy extends CollisionnableObject {
         if (this.movement.x === 0) {
             this.state.direction = this.state.direction === 'right' ? 'left' : 'right'
         }
+    }
+
+    render() {
+        super.render()
+
+        const angle = this.angleToTarget
+        let ySpritePos = 0
+        let xScale = 1
+
+        if (angle > 2) {
+            ySpritePos = this.animation.ySpriteSize
+        } else if (angle > 0 && angle < 1) {
+            ySpritePos = this.animation.ySpriteSize
+            xScale = -1
+        } else if (angle < -2) {
+            ySpritePos = 2 * this.animation.ySpriteSize
+        } else if (angle < 0 && angle > -1) {
+            ySpritePos = 2 * this.animation.ySpriteSize
+            xScale = -1
+        } else if (angle < -1 && angle > -2) {
+            ySpritePos = 3 * this.animation.ySpriteSize
+        }
+
+        let xSpritePos = 0
+
+        if (this.movement.x || this.movement.y) {
+            if (this.animation.ticker % (60 * this.animation.speed) === 0) {
+                this.animation.index = this.animation.index % 2 + 1
+            }
+
+            xSpritePos = this.animation.index * this.animation.xSpriteSize
+
+            this.animation.ticker += 1
+        }
+
+        this.texture.frame = new PIXI.Rectangle(
+            xSpritePos, ySpritePos,
+            this.animation.xSpriteSize, this.animation.ySpriteSize)
+
+        this.mainSprite.scale.x = xScale
     }
 }

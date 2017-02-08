@@ -62,19 +62,24 @@ export default class Hero extends ControllableObject {
     }
 
     render() {
+        super.render()
+
         const angle = this.angleToMouse
         let ySpritePos = 0
+        let xScale = 1
 
         if (angle > 2) {
             ySpritePos = this.animation.ySpriteSize
         } else if (angle > 0 && angle < 1) {
-            ySpritePos = 2 * this.animation.ySpriteSize
+            ySpritePos = this.animation.ySpriteSize
+            xScale = -1
         } else if (angle < -2) {
-            ySpritePos = 3 * this.animation.ySpriteSize
+            ySpritePos = 2 * this.animation.ySpriteSize
         } else if (angle < 0 && angle > -1) {
-            ySpritePos = 4 * this.animation.ySpriteSize
+            ySpritePos = 2 * this.animation.ySpriteSize
+            xScale = -1
         } else if (angle < -1 && angle > -2) {
-            ySpritePos = 5 * this.animation.ySpriteSize
+            ySpritePos = 3 * this.animation.ySpriteSize
         }
 
         let xSpritePos = 0
@@ -92,5 +97,7 @@ export default class Hero extends ControllableObject {
         this.texture.frame = new PIXI.Rectangle(
             xSpritePos, ySpritePos,
             this.animation.xSpriteSize, this.animation.ySpriteSize)
+
+        this.mainSprite.scale.x = xScale
     }
 }

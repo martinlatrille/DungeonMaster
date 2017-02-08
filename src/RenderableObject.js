@@ -1,26 +1,21 @@
 import * as PIXI from 'pixi.js'
+import _ from 'lodash'
 
 let RENDERABLES = []
 
 export function updateStage(stage) {
     RENDERABLES.forEach(renderable => {
-        let needSort = false
-
         if (!renderable.isRendered && !stage.children.includes(renderable)) {
             stage.addChild(renderable)
             renderable.isRendered = true
-            needSort = true
         }
 
         if (renderable.isDestroyed && stage.children.includes(renderable)) {
             stage.removeChild(renderable)
-            needSort = true
-        }
-
-        if (needSort) {
-            stage.children = stage.children.sort(child => child.position.y).sort(child => child.zIndex)
         }
     })
+
+    stage.children = _.sortBy(stage.children, ['zIndex', 'position.y'])
 }
 
 export default class RenderableObject extends PIXI.Container {

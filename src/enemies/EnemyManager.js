@@ -12,12 +12,10 @@ export default class EnemyManager extends GenericManager {
 
     addEnemy(
         posX, posY,
-        color = this._defaultItemColor,
         width = this._defaultItemWidth,
         height = this._defaultItemHeight
     ) {
         super.addItem(new Enemy(
-            color,
             width,
             height,
             posX,

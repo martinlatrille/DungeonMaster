@@ -63,7 +63,6 @@ export default class EnemySpawn extends CollisionableObject {
 
     spawn() {
         const newChild = new Enemy(
-            this.childAttributes.color,
             this.childAttributes.width,
             this.childAttributes.height,
             this.position.x,
