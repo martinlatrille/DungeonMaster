@@ -142,14 +142,14 @@ export default class Enemy extends CollisionnableObject {
             if (this.state.direction === 'right') {
                 if (this.position.x + this.size.x / 2 + this.speed < windowWidth) {
                     this.movement.x = this.speed
-                    this.angleToTarget = - PI / 4
+                    this.angleToTarget = 0
                 } else {
                     this.state.direction = 'left'
                 }
             } else if (this.state.direction === 'left') {
                 if (this.position.x - this.size.x / 2 - this.speed > 0) {
                     this.movement.x = -this.speed
-                    this.angleToTarget = PI / 4
+                    this.angleToTarget = PI
                 } else {
                     this.state.direction = 'right'
                 }
@@ -184,7 +184,7 @@ export default class Enemy extends CollisionnableObject {
 
         if (angle > 2) {
             direction = 'toBottomSide'
-        } else if (angle > 0 && angle < 1) {
+        } else if (angle >= 0 && angle < 1) {
             direction = 'toBottomSide'
             xScale = -1
         } else if (angle < -2) {
@@ -206,7 +206,6 @@ export default class Enemy extends CollisionnableObject {
             this.animation.index = 0
         }
 
-        console.log(direction, this.animation.index)
         this.mainSprite.texture = ENEMY_TEXTURE_STORE[direction][this.animation.index]
 
         this.mainSprite.scale.x = xScale
