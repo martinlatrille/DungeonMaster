@@ -1,21 +1,55 @@
 import * as PIXI from 'pixi.js'
-import {windowWidth} from '../config'
+import {windowWidth, PI} from '../config'
 import CollisionnableObject, {COLLISIONABLES} from '../CollisionableObject'
 import HitLabel from '../ui/HitLabel'
 import Hero from '../hero/Hero'
 
+// function getTexture(texture) {
+//     return {
+//         toBottom: new Texture(texture, new PIXI.Rectangle(0, 0, 50, 58)),
+//         toBottomLeft: new Texture(texture, new PIXI.)
+//     }
+//
+// }
+
+function generateTextureStore(texture, frameWidth, frameHeight) {
+    return {
+        toBottom: [
+            new PIXI.Texture(texture, new PIXI.Rectangle(0, 0, frameWidth, frameHeight)),
+            new PIXI.Texture(texture, new PIXI.Rectangle(frameWidth, 0, frameWidth, frameHeight)),
+            new PIXI.Texture(texture, new PIXI.Rectangle(2 * frameWidth, 0, frameWidth, frameHeight))
+        ],
+        toBottomSide: [
+            new PIXI.Texture(texture, new PIXI.Rectangle(0, frameHeight, frameWidth, frameHeight)),
+            new PIXI.Texture(texture, new PIXI.Rectangle(frameWidth, frameHeight, frameWidth, frameHeight)),
+            new PIXI.Texture(texture, new PIXI.Rectangle(2 * frameWidth, frameHeight, frameWidth, frameHeight)),
+        ],
+        toTopSide: [
+            new PIXI.Texture(texture, new PIXI.Rectangle(0, 2 * frameHeight, frameWidth, frameHeight)),
+            new PIXI.Texture(texture, new PIXI.Rectangle(frameWidth, 2 * frameHeight, frameWidth, frameHeight)),
+            new PIXI.Texture(texture, new PIXI.Rectangle(2 * frameWidth, 2 *frameHeight, frameWidth, frameHeight)),
+        ],
+        toTop: [
+            new PIXI.Texture(texture, new PIXI.Rectangle(0, 3 * frameHeight, frameWidth, frameHeight)),
+            new PIXI.Texture(texture, new PIXI.Rectangle(frameWidth,  3 * frameHeight, frameWidth, frameHeight)),
+            new PIXI.Texture(texture, new PIXI.Rectangle(2 * frameWidth, 3 * frameHeight, frameWidth, frameHeight)),
+        ],
+    }
+}
+
+let ENEMY_TEXTURE_STORE = null
+
 export default class Enemy extends CollisionnableObject {
     constructor(width, height, posX, posY) {
-        const texture = PIXI.loader.resources.zombieSpritesheet.texture
-        texture.frame = new PIXI.Rectangle(0, 0, 50, 58)
+        if (!ENEMY_TEXTURE_STORE) {
+            ENEMY_TEXTURE_STORE = generateTextureStore(PIXI.loader.resources.zombieSpritesheet.texture.baseTexture, 50, 58)
+        }
 
         super(
-            texture,
+            ENEMY_TEXTURE_STORE['toBottom'][0],
             width,
             height
         )
-
-        this.texture = texture
 
         this.state = {
             direction: 'right',
@@ -108,12 +142,14 @@ export default class Enemy extends CollisionnableObject {
             if (this.state.direction === 'right') {
                 if (this.position.x + this.size.x / 2 + this.speed < windowWidth) {
                     this.movement.x = this.speed
+                    this.angleToTarget = - PI / 4
                 } else {
                     this.state.direction = 'left'
                 }
             } else if (this.state.direction === 'left') {
                 if (this.position.x - this.size.x / 2 - this.speed > 0) {
                     this.movement.x = -this.speed
+                    this.angleToTarget = PI / 4
                 } else {
                     this.state.direction = 'right'
                 }
@@ -142,38 +178,36 @@ export default class Enemy extends CollisionnableObject {
         super.render()
 
         const angle = this.angleToTarget
-        let ySpritePos = 0
+
+        let direction = 'toBottom'
         let xScale = 1
 
         if (angle > 2) {
-            ySpritePos = this.animation.ySpriteSize
+            direction = 'toBottomSide'
         } else if (angle > 0 && angle < 1) {
-            ySpritePos = this.animation.ySpriteSize
+            direction = 'toBottomSide'
             xScale = -1
         } else if (angle < -2) {
-            ySpritePos = 2 * this.animation.ySpriteSize
+            direction = 'toTopSide'
         } else if (angle < 0 && angle > -1) {
-            ySpritePos = 2 * this.animation.ySpriteSize
+            direction = 'toTopSide'
             xScale = -1
         } else if (angle < -1 && angle > -2) {
-            ySpritePos = 3 * this.animation.ySpriteSize
+            direction = 'toTop'
         }
-
-        let xSpritePos = 0
 
         if (this.movement.x || this.movement.y) {
             if (this.animation.ticker % (60 * this.animation.speed) === 0) {
                 this.animation.index = this.animation.index % 2 + 1
             }
 
-            xSpritePos = this.animation.index * this.animation.xSpriteSize
-
             this.animation.ticker += 1
+        } else {
+            this.animation.index = 0
         }
 
-        this.texture.frame = new PIXI.Rectangle(
-            xSpritePos, ySpritePos,
-            this.animation.xSpriteSize, this.animation.ySpriteSize)
+        console.log(direction, this.animation.index)
+        this.mainSprite.texture = ENEMY_TEXTURE_STORE[direction][this.animation.index]
 
         this.mainSprite.scale.x = xScale
     }
