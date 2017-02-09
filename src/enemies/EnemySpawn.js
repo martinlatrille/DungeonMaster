@@ -1,32 +1,43 @@
 import * as PIXI from 'pixi.js'
 import CollisionableObject from '../CollisionableObject'
+import RenderableObject from '../RenderableObject'
 import Enemy from './Enemy'
 import EnemyManager from './EnemyManager'
 import HitLabel from '../ui/HitLabel'
 
 export default class EnemySpawn extends CollisionableObject {
     constructor(posX, posY, direction = "top") {
-        const width = 100
-        const height = 30
-        const color = "blue"
+        const width = 120
+        const height = 40
+        // const color = "blue"
+        //
+        // const canvas = document.createElement('canvas')
+        // canvas.width = width
+        // canvas.height = height
+        //
+        // const ctx = canvas.getContext('2d')
+        // ctx.rect(0, 0, width, height)
+        // ctx.fillStyle = color
+        // ctx.fill()
 
-        const canvas = document.createElement('canvas')
-        canvas.width = width
-        canvas.height = height
-
-        const ctx = canvas.getContext('2d')
-        ctx.rect(0, 0, width, height)
-        ctx.fillStyle = color
-        ctx.fill()
+        const texture = PIXI.loader.resources.enemySpawnShadow.texture
 
         super(
-            new PIXI.Texture(new PIXI.BaseTexture(canvas)),
+            texture,
             width,
             height
         )
 
+        this.portal = new RenderableObject(PIXI.loader.resources.enemySpawn.texture)
+        this.portal.position.set(posX, posY)
+
+        this.shadow = new RenderableObject(PIXI.loader.resources.enemySpawnFrame.texture)
+        this.shadow.position.set(posX, posY)
+
+        this.mainSprite.addChild(this.portal)
+        this.mainSprite.addChild(this.shadow)
+
         this.childAttributes = {
-            color: 'green',
             width: 30,
             height: 30
         }
@@ -57,7 +68,7 @@ export default class EnemySpawn extends CollisionableObject {
     _displayHitLabel() {
         this.addChild(new HitLabel(
             this.mainSprite.position.x,
-            this.mainSprite.position.y - this.size.y / 2 - 10
+            this.mainSprite.position.y - this.size.y / 2 - 55
         ))
     }
 
@@ -91,5 +102,9 @@ export default class EnemySpawn extends CollisionableObject {
         } else {
             this.state.spawnDecount += - 1 / 60
         }
+    }
+
+    animate() {
+        this.portal.rotation += 0.01
     }
 }

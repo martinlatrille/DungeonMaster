@@ -36,6 +36,9 @@ PIXI.loader
     .add('wall', 'assets/img/wall.png')
     .add('wallTop', 'assets/img/wall-top.png')
     .add('wallCorner', 'assets/img/wall-corner.png')
+    .add('enemySpawn', 'assets/img/portal.png')
+    .add('enemySpawnFrame', 'assets/img/portal-frame.png')
+    .add('enemySpawnShadow', 'assets/img/portal-shadow.png')
     .load(setup)
 
 function setup() {
@@ -52,6 +55,7 @@ function setup() {
 
     // Create the EnemyManager
     const enemySpawn = new EnemySpawn(windowWidth / 2, windowHeight - 230)
+    stage.addChild(enemySpawn)
 
     // Create the HealthBar
     const uiElements = [
@@ -91,6 +95,8 @@ function setup() {
         play()
         render()
         cleanup()
+
+        enemySpawn.animate()
 
         renderer.render(stage)
     }

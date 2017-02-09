@@ -103,7 +103,7 @@ export default class Enemy extends CollisionnableObject {
     _displayHitLabel() {
         this.addChild(new HitLabel(
             this.mainSprite.position.x,
-            this.mainSprite.position.y - this.size.y / 2 - 10
+            this.mainSprite.position.y - this.size.y / 2 - 20
         ))
     }
 

@@ -8,8 +8,6 @@ export default class Room extends PIXI.Container {
     constructor(width, height, posX, posY) {
         super()
 
-        this.zIndex = 0
-
         this.position.set(posX, posY)
 
         const groundTexture = PIXI.loader.resources.ground.texture
@@ -38,6 +36,7 @@ export default class Room extends PIXI.Container {
                             newChild = new Wall('front')
                         } else {
                             newChild = new RenderableObject(groundTexture)
+                            newChild.zIndex = -1
                         }
                     }
                 } else if (i === height - 1) {
@@ -51,7 +50,6 @@ export default class Room extends PIXI.Container {
                 }
 
                 if (newChild) {
-                    newChild.zIndex = 0
                     newChild.position.set(j * TILE_SIZE, i * TILE_SIZE)
                     this.addChild(newChild)
                 }
