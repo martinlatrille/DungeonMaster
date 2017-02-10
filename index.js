@@ -46,7 +46,7 @@ function setup() {
     const room = new Room(Math.ceil(windowWidth / 100), Math.ceil(windowHeight / 100), 0, 100)
     stage.addChild(room)
 
-    // Create the Heroa
+    // Create the Hero
     const heroManager = new HeroManager()
     heroManager.addHero(windowWidth / 2, 200)
     attachControls(heroManager.hero)

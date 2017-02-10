@@ -9,16 +9,6 @@ export default class EnemySpawn extends CollisionableObject {
     constructor(posX, posY, direction = "top") {
         const width = 120
         const height = 40
-        // const color = "blue"
-        //
-        // const canvas = document.createElement('canvas')
-        // canvas.width = width
-        // canvas.height = height
-        //
-        // const ctx = canvas.getContext('2d')
-        // ctx.rect(0, 0, width, height)
-        // ctx.fillStyle = color
-        // ctx.fill()
 
         const texture = PIXI.loader.resources.enemySpawnShadow.texture
 

@@ -4,14 +4,6 @@ import CollisionnableObject, {COLLISIONABLES} from '../CollisionableObject'
 import HitLabel from '../ui/HitLabel'
 import Hero from '../hero/Hero'
 
-// function getTexture(texture) {
-//     return {
-//         toBottom: new Texture(texture, new PIXI.Rectangle(0, 0, 50, 58)),
-//         toBottomLeft: new Texture(texture, new PIXI.)
-//     }
-//
-// }
-
 function generateTextureStore(texture, frameWidth, frameHeight) {
     return {
         toBottom: [
