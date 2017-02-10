@@ -6,7 +6,7 @@ import EnemyManager from './EnemyManager'
 import HitLabel from '../ui/HitLabel'
 
 export default class EnemySpawn extends CollisionableObject {
-    constructor(posX, posY, direction = "top") {
+    constructor(posX, posY, onDeathCallback, direction = "top") {
         const width = 120
         const height = 40
 
@@ -35,7 +35,7 @@ export default class EnemySpawn extends CollisionableObject {
         this.state = {
             life: 1000,
             direction,
-            manager: new EnemyManager(),
+            manager: new EnemyManager(onDeathCallback),
             spawnSpeed: 2, // in seconds
             spawnDecount: 3 // in seconds
         }

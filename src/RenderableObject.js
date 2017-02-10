@@ -1,22 +1,6 @@
 import * as PIXI from 'pixi.js'
-import _ from 'lodash'
 
-let RENDERABLES = []
-
-export function updateStage(stage) {
-    RENDERABLES.forEach(renderable => {
-        if (!renderable.isRendered && !stage.children.includes(renderable)) {
-            stage.addChild(renderable)
-            renderable.isRendered = true
-        }
-
-        if (renderable.isDestroyed && stage.children.includes(renderable)) {
-            stage.removeChild(renderable)
-        }
-    })
-
-    stage.children = _.sortBy(stage.children, ['zIndex', 'position.y'])
-}
+export let RENDERABLES = []
 
 export default class RenderableObject extends PIXI.Container {
     constructor(texture, zIndex = 1, addToStage = true) {

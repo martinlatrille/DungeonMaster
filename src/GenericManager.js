@@ -45,6 +45,13 @@ export default class GenericManager {
     }
 
     clean() {
+        const destroyedChildren = this._children.filter(child => child.isDestroyed)
+
+        destroyedChildren.forEach(child => {
+            if (this.onDestroyCallback) {
+                this.onDestroyCallback(child)
+            }
+        })
         this._children = this._children.filter(child => !child.isDestroyed)
     }
 }

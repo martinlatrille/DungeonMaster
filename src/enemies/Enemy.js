@@ -62,6 +62,8 @@ export default class Enemy extends CollisionnableObject {
 
         this.sightDistance = 800
 
+        this.value = 20
+
         this.position.set(posX, posY)
     }
 

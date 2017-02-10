@@ -30,7 +30,8 @@ export default class Timer extends PIXI.Text {
             currentTime: startTime
         }
 
-        this.position.set(windowWidth - 110, 20)
+        this.position.set(windowWidth - 20, 20)
+        this.anchor.set(1, 0.5)
     }
 
     update() {
