@@ -48,10 +48,16 @@ export default class GameManager extends PIXI.Container {
             new ScoreCounter(this)
         ]
 
+        this.state = {
+            isOver: false
+        }
+
         // this.managers = []
         // this.renderables = []
         // this.collisionables = []
     }
+
+    get isOver() { return this.state.isOver }
 
     play() {
         allManagers.move()
@@ -63,6 +69,10 @@ export default class GameManager extends PIXI.Container {
         doAllCollisions()
 
         allManagers.applyMovement()
+
+        if (this.heroManager.hero.isDestroyed) {
+            this.state.isOver = true
+        }
     }
 
     update() {
@@ -86,6 +96,7 @@ export default class GameManager extends PIXI.Container {
 
     render() {
         this.update()
+        this.animate()
         allManagers.render()
         this.enemySpawn.render()
         this.ui.forEach(elt => elt.update())

@@ -28,7 +28,53 @@ PIXI.loader
     .load(setup)
 
 function setup() {
+    const scene = new PIXI.Container()
     const game = new GameManager()
+
+    scene.addChild(game)
+
+    function play() {
+        game.play()
+        game.render()
+        game.cleanup()
+
+        if (game.isOver) {
+            scene.children = scene.children.filter(child => !child.isOver)
+            const endScreen = new PIXI.Text("You're dead.", {
+                fontFamily: "'Press Start 2P', Impact",
+                fontSize: "22px",
+                fill: "white"
+            })
+            endScreen.anchor.set(0.5, 0.5)
+            endScreen.position.set(windowWidth / 2, windowHeight / 2 - 20)
+            scene.addChild(endScreen)
+
+            const replayText = new PIXI.Text("Refresh the page to replay.", {
+                fontFamily: "'Press Start 2P', Impact",
+                fontSize: "16px",
+                fill: "white"
+            })
+            replayText.anchor.set(0.5, 0.5)
+            replayText.position.set(windowWidth / 2, windowHeight / 2 + 20)
+            scene.addChild(replayText)
+
+            const score = new PIXI.Text(`Score: ${game.score}`, {
+                fontFamily: "'Press Start 2P', Impact",
+                fontSize: "14px",
+                fill: "white"
+            })
+            score.anchor.set(0.5, 0.5)
+            score.position.set(windowWidth / 2, windowHeight / 2 + 60)
+            scene.addChild(score)
+            
+            state = end
+        }
+    }
+
+    function end() {
+    }
+
+    let state = play
 
     /**
      * Updates 60times/second
@@ -36,11 +82,9 @@ function setup() {
     function gameLoop() {
         requestAnimationFrame(gameLoop)
 
-        game.play()
-        game.render()
-        game.cleanup()
+        state()
 
-        renderer.render(game)
+        renderer.render(scene)
     }
 
     gameLoop()
