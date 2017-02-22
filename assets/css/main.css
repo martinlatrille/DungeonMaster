@@ -33,3 +33,15 @@ canvas {
 #startbutton.ready {
     opacity: 1;
 }
+
+.link {
+    margin-top: 15px;
+    font-size: 10px;
+    color: #777;
+    text-decoration: none;
+}
+
+.link:visited {
+    color: #777;
+    text-decoration: none;
+}
