@@ -46,8 +46,7 @@ export default class Enemy extends CollisionnableObject {
         this.state = {
             direction: 'right',
             damage: 10,
-            life: 100,
-            children: []
+            life: 100
         }
 
         this.animation = {

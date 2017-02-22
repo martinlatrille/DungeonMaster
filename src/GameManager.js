@@ -43,6 +43,7 @@ export default class GameManager extends PIXI.Container {
 
         // Create the Enemy Spawn
         this.enemySpawn = new EnemySpawn(this, windowWidth / 2, windowHeight - 230, updateScore)
+        this.addRenderable(this.enemySpawn)
         this.addCollisionable(this.enemySpawn)
 
         this.ui = [
@@ -72,7 +73,6 @@ export default class GameManager extends PIXI.Container {
         }
     }
 
-
     addManager(item) { this.state.objectManagers.push(item) }
 
     play() {
@@ -91,13 +91,8 @@ export default class GameManager extends PIXI.Container {
         }
     }
 
-    update() {
+    _update() {
         this.renderables.forEach(renderable => {
-            if (!renderable.isRendered) {
-                this.addChild(renderable)
-                renderable.isRendered = true
-            }
-
             if (renderable.isDestroyed && this.children.includes(renderable)) {
                 this.removeChild(renderable)
             }
@@ -106,13 +101,13 @@ export default class GameManager extends PIXI.Container {
         this.children = _.sortBy(this.children, ['zIndex', 'position.y'])
     }
 
-    animate() {
+    _animate() {
         this.enemySpawn.animate()
     }
 
     render() {
-        this.update()
-        this.animate()
+        this._update()
+        this._animate()
         this.managers.render()
         this.enemySpawn.render()
         this.ui.forEach(elt => elt.update())
