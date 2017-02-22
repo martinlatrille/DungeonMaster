@@ -3,8 +3,8 @@ import _ from 'lodash'
 
 import Room from './map/Room'
 
-import {doAllCollisions} from './CollisionableObject'
-import {allManagers} from './GenericManager'
+import {doAllCollisions} from './utils/collisions'
+import {allObjectsManagers} from './GenericObjectManager'
 import {RENDERABLES} from './RenderableObject'
 
 import HeroManager from './hero/HeroManager'
@@ -22,12 +22,18 @@ export default class GameManager extends PIXI.Container {
     constructor() {
         super()
 
+        this.state = {
+            isOver: false,
+            managers: [],
+            collisionables: []
+        }
+
         // Create the Room
-        this.room = new Room(Math.ceil(windowWidth / 100), Math.ceil(windowHeight / 100), 0, 100)
+        this.room = new Room(this, Math.ceil(windowWidth / 100), Math.ceil(windowHeight / 100), 0, 100)
         this.addChild(this.room)
 
         // Create the Hero
-        this.heroManager = new HeroManager()
+        this.heroManager = new HeroManager(this)
         this.heroManager.addHero(windowWidth / 2, 200)
         attachControls(this.heroManager.hero)
 
@@ -39,7 +45,7 @@ export default class GameManager extends PIXI.Container {
         }
 
         // Create the Enemy Spawn
-        this.enemySpawn = new EnemySpawn(windowWidth / 2, windowHeight - 230, updateScore)
+        this.enemySpawn = new EnemySpawn(this, windowWidth / 2, windowHeight - 230, updateScore)
         this.addChild(this.enemySpawn)
 
         this.ui = [
@@ -47,28 +53,32 @@ export default class GameManager extends PIXI.Container {
             new Timer(this, -3),
             new ScoreCounter(this)
         ]
-
-        this.state = {
-            isOver: false
-        }
-
-        // this.managers = []
-        // this.renderables = []
-        // this.collisionables = []
     }
 
     get isOver() { return this.state.isOver }
 
+    get renderables() { return this.children }
+
+    addRenderable(item) { this.addChild(item) }
+
+    get collisionables() { return this.state.collisionables}
+
+    addCollisionable(item) { this.state.collisionables.push(item) }
+
+    get managers() { return this.state.managers}
+
+    addManager(item) { this.state.managers.push(item) }
+
     play() {
-        allManagers.move()
+        allObjectsManagers.move()
 
         if (!this.enemySpawn.isDestroyed) {
             this.enemySpawn.work()
         }
 
-        doAllCollisions()
+        this.state.collisionables = doAllCollisions(this.state.collisionables)
 
-        allManagers.applyMovement()
+        allObjectsManagers.applyMovement()
 
         if (this.heroManager.hero.isDestroyed) {
             this.state.isOver = true
@@ -97,12 +107,12 @@ export default class GameManager extends PIXI.Container {
     render() {
         this.update()
         this.animate()
-        allManagers.render()
+        allObjectsManagers.render()
         this.enemySpawn.render()
         this.ui.forEach(elt => elt.update())
     }
 
     cleanup() {
-        allManagers.clean()
+        allObjectsManagers.clean()
     }
 }

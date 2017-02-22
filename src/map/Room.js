@@ -3,9 +3,10 @@ import RenderableObject from './../RenderableObject'
 import {TILE_SIZE} from './../config'
 
 import Wall from './Wall'
+import CollisionableObject from "../CollisionableObject";
 
 export default class Room extends PIXI.Container {
-    constructor(width, height, posX, posY) {
+    constructor(game, width, height, posX, posY) {
         super()
 
         this.position.set(posX, posY)
@@ -52,6 +53,10 @@ export default class Room extends PIXI.Container {
                 if (newChild) {
                     newChild.position.set(j * TILE_SIZE, i * TILE_SIZE)
                     this.addChild(newChild)
+
+                    if (newChild instanceof CollisionableObject) {
+                        game.addCollisionable(newChild)
+                    }
                 }
             }
         }

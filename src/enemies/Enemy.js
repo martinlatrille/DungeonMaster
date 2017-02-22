@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import {windowWidth, PI} from '../config'
-import CollisionnableObject, {COLLISIONABLES} from '../CollisionableObject'
+import CollisionnableObject from '../CollisionableObject'
 import HitLabel from '../ui/HitLabel'
 import Hero from '../hero/Hero'
 
@@ -101,13 +101,13 @@ export default class Enemy extends CollisionnableObject {
         ))
     }
 
-    see() {
+    see(collisionables) {
         let target = {
             obj: null,
             distance: null
         }
 
-        COLLISIONABLES.forEach(obj => {
+        collisionables.forEach(obj => {
             if (obj instanceof Hero) {
                 const xDistance = Math.abs(obj.position.x - this.position.x)
                 const yDistance = Math.abs(obj.position.y - this.position.y)
@@ -124,8 +124,8 @@ export default class Enemy extends CollisionnableObject {
         this.target = target
     }
 
-    move() {
-        this.see()
+    move(collisionables) {
+        this.see(collisionables)
 
         this.movement = {
             x: 0,

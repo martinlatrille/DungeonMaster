@@ -1,4 +1,4 @@
-import GenericManager from '../GenericManager'
+import GenericManager from '../GenericObjectManager'
 import Bullet from './Bullet'
 
 export default class BulletManager extends GenericManager {

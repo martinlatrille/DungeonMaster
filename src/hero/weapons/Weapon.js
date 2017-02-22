@@ -2,7 +2,7 @@ import RenderableObject from '../../RenderableObject'
 import BulletManager from './../BulletManager'
 
 export default class Weapon extends RenderableObject {
-    constructor(texture, hero) {
+    constructor(game, texture, hero) {
         super(texture, 1, false)
 
         this.position.set(
@@ -14,7 +14,7 @@ export default class Weapon extends RenderableObject {
         // this.mainSprite.anchor.set(0, 0.5)
         this.hero = hero
 
-        this.bulletManager = new BulletManager()
+        this.bulletManager = new BulletManager(game)
         this.mainSprite.anchor.set(0, 0.5)
     }
 

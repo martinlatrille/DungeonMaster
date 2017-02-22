@@ -1,9 +1,9 @@
-import GenericManager from '../GenericManager'
+import GenericObjectManager from '../GenericObjectManager'
 import Enemy from './Enemy'
 
-export default class EnemyManager extends GenericManager {
-    constructor(onDeathCallback) {
-        super()
+export default class EnemyManager extends GenericObjectManager {
+    constructor(game, onDeathCallback) {
+        super(game)
 
         this._defaultItemWidth = 30
         this._defaultItemHeight = 30

@@ -1,9 +1,9 @@
-import GenericManager from '../GenericManager'
+import GenericObjectManager from '../GenericObjectManager'
 import Hero from './Hero'
 
-export default class HeroManager extends GenericManager {
+export default class HeroManager extends GenericObjectManager {
     addHero(posX, posY) {
-        super.addItem(new Hero(posX, posY))
+        super.addItem(new Hero(this._game, posX, posY))
     }
 
     get hero() {

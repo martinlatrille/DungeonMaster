@@ -31,7 +31,7 @@ function generateTextureStore(texture, frameWidth, frameHeight) {
 let HERO_TEXTURE_STORE = null
 
 export default class Hero extends ControllableObject {
-    constructor(posX, posY, width = 40, height = 45) {
+    constructor(game, posX, posY, width = 40, height = 45) {
         if (!HERO_TEXTURE_STORE) {
             HERO_TEXTURE_STORE = generateTextureStore(PIXI.loader.resources.heroSpritesheet.texture.baseTexture, 50, 58)
         }
@@ -50,8 +50,8 @@ export default class Hero extends ControllableObject {
 
         this.position.set(posX, posY)
 
-        this.weaponManager = new WeaponManager()
-        this.weaponManager.addItem(new BasicGun(this))
+        this.weaponManager = new WeaponManager(game)
+        this.weaponManager.addItem(new BasicGun(game, this))
 
         this.animation = {
             index: 0,

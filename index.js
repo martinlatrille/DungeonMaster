@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import {windowWidth, windowHeight} from './src/config.js'
 
 import GameManager from './src/GameManager'
+import {keyboard} from "./src/hero/commands";
 
 // Create the renderer and add it to the body
 const renderer = new PIXI.autoDetectRenderer(window.width, window.height)
@@ -28,10 +29,8 @@ PIXI.loader
     .load(setup)
 
 function setup() {
-    const scene = new PIXI.Container()
-    const game = new GameManager()
-
-    scene.addChild(game)
+    let scene
+    let game
 
     function play() {
         game.play()
@@ -49,7 +48,7 @@ function setup() {
             endScreen.position.set(windowWidth / 2, windowHeight / 2 - 20)
             scene.addChild(endScreen)
 
-            const replayText = new PIXI.Text("Refresh the page to replay.", {
+            const replayText = new PIXI.Text("Press 'Enter' to replay.", {
                 fontFamily: "'Press Start 2P', Impact",
                 fontSize: "16px",
                 fill: "white"
@@ -66,15 +65,26 @@ function setup() {
             score.anchor.set(0.5, 0.5)
             score.position.set(windowWidth / 2, windowHeight / 2 + 60)
             scene.addChild(score)
-            
+
             state = end
         }
     }
 
-    function end() {
-    }
+    function end() {}
 
     let state = play
+
+    function initGame() {
+        game = new GameManager()
+        scene = new PIXI.Container()
+        scene.addChild(game)
+        state = play
+    }
+
+    initGame()
+
+    let restartKey = keyboard(13)
+    restartKey.press = initGame
 
     /**
      * Updates 60times/second

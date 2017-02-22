@@ -1,25 +1,40 @@
-export const allManagers = {
+import RenderableObject from "./RenderableObject";
+import CollisionableObject from "./CollisionableObject";
+
+export const allObjectsManagers = {
     items: [],
-    clean: () => allManagers.items.forEach(manager => manager.clean()),
-    move: () => allManagers.items.forEach(manager => manager.move()),
-    applyMovement: () => allManagers.items.forEach(manager => manager.applyMovement()),
-    render: () => allManagers.items.forEach(manager => manager.render()),
+    clean: () => allObjectsManagers.items.forEach(manager => manager.clean()),
+    move: () => allObjectsManagers.items.forEach(manager => manager.move()),
+    applyMovement: () => allObjectsManagers.items.forEach(manager => manager.applyMovement()),
+    render: () => allObjectsManagers.items.forEach(manager => manager.render()),
 }
 
-export default class GenericManager {
-    constructor() {
+export default class GenericObjectManager {
+    constructor(game) {
+        this._game = game
+
+        this._game.addManager(this)
+
         this._children = []
-        allManagers.items.push(this)
+        allObjectsManagers.items.push(this)
     }
 
     addItem(item) {
+        if (item instanceof RenderableObject) {
+            this._game.addRenderable(item)
+        }
+
+        if (item instanceof CollisionableObject) {
+            this._game.addCollisionable(item)
+        }
+
         this._children.push(item)
     }
 
     move() {
         this._children.forEach(child => {
             if (child.move) {
-                child.move()
+                child.move(this._game.collisionables)
             }
 
             if (child.applyForces) {
