@@ -1,22 +1,13 @@
 import RenderableObject from "./RenderableObject"
 import CollisionableObject from "./CollisionableObject"
 
-export const allObjectsManagers = {
-    items: [],
-    clean: () => allObjectsManagers.items.forEach(manager => manager.clean()),
-    move: () => allObjectsManagers.items.forEach(manager => manager.move()),
-    applyMovement: () => allObjectsManagers.items.forEach(manager => manager.applyMovement()),
-    render: () => allObjectsManagers.items.forEach(manager => manager.render()),
-}
 
 export default class GenericObjectManager {
     constructor(game) {
         this._game = game
 
         this._game.addManager(this)
-
         this._children = []
-        allObjectsManagers.items.push(this)
     }
 
     addItem(item) {

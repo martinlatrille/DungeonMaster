@@ -4,7 +4,6 @@ import _ from 'lodash'
 import Room from './map/Room'
 
 import {doAllCollisions} from './utils/collisions'
-import {allObjectsManagers} from './GenericObjectManager'
 
 import HeroManager from './hero/HeroManager'
 import {attachControls} from './hero/commands'
@@ -23,7 +22,7 @@ export default class GameManager extends PIXI.Container {
 
         this.state = {
             isOver: false,
-            managers: [],
+            objectManagers: [],
             collisionables: []
         }
 
@@ -63,12 +62,21 @@ export default class GameManager extends PIXI.Container {
 
     addCollisionable(item) { this.state.collisionables.push(item) }
 
-    get managers() { return this.state.managers}
+    get managers() {
+        return {
+            items: this.state.objectManagers,
+            clean: () => this.state.objectManagers.forEach(manager => manager.clean()),
+            move: () => this.state.objectManagers.forEach(manager => manager.move()),
+            applyMovement: () => this.state.objectManagers.forEach(manager => manager.applyMovement()),
+            render: () => this.state.objectManagers.forEach(manager => manager.render()),
+        }
+    }
 
-    addManager(item) { this.state.managers.push(item) }
+
+    addManager(item) { this.state.objectManagers.push(item) }
 
     play() {
-        allObjectsManagers.move()
+        this.managers.move()
 
         if (!this.enemySpawn.isDestroyed) {
             this.enemySpawn.work()
@@ -76,7 +84,7 @@ export default class GameManager extends PIXI.Container {
 
         this.state.collisionables = doAllCollisions(this.state.collisionables)
 
-        allObjectsManagers.applyMovement()
+        this.managers.applyMovement()
 
         if (this.heroManager.hero.isDestroyed) {
             this.state.isOver = true
@@ -105,12 +113,12 @@ export default class GameManager extends PIXI.Container {
     render() {
         this.update()
         this.animate()
-        allObjectsManagers.render()
+        this.managers.render()
         this.enemySpawn.render()
         this.ui.forEach(elt => elt.update())
     }
 
     cleanup() {
-        allObjectsManagers.clean()
+        this.managers.clean()
     }
 }
