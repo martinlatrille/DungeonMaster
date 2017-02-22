@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import {windowWidth, windowHeight} from './src/config.js'
+import {windowWidth, windowHeight, refreshWindowSize} from './src/config.js'
 
 import GameManager from './src/GameManager'
 import {keyboard} from "./src/hero/commands";
@@ -23,6 +23,8 @@ PIXI.loader
     })
 
 function start() {
+    refreshWindowSize()
+
     // Create the renderer and add it to the body
     const renderer = new PIXI.autoDetectRenderer(window.width, window.height)
     document.getElementById('menu').classList.add('hidden')
