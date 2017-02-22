@@ -13,7 +13,7 @@ export default class ScoreCounter extends PIXI.Text {
 
         this.game = game
 
-        this.position.set(windowWidth - 20, 60)
+        this.position.set(windowWidth - 20, 40)
         this.anchor.set(1, 0.5)
         game.addChild(this)
     }
