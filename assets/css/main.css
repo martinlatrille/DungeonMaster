@@ -1,3 +1,35 @@
-body {
+canvas {
     cursor: url('/assets/img/cursor.png'), crosshair;
+}
+
+.menu {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: black;
+    font-family: "Press Start 2P", Impact, serif;
+    color: white;
+    height: 100%;
+    width: 100%;
+}
+
+.menu.hidden {
+    display: none;
+}
+
+#startbutton {
+    width: 100px;
+    height: 30px;
+    background: white;
+    border-radius: 3px;
+    color: black;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#startbutton.ready {
+    opacity: 1;
 }

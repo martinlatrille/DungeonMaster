@@ -4,16 +4,6 @@ import {windowWidth, windowHeight} from './src/config.js'
 import GameManager from './src/GameManager'
 import {keyboard} from "./src/hero/commands";
 
-// Create the renderer and add it to the body
-const renderer = new PIXI.autoDetectRenderer(window.width, window.height)
-document.body.appendChild(renderer.view)
-
-// Resize the view to fill the entire window
-renderer.view.style.position = 'absolute'
-renderer.view.style.display = 'block'
-renderer.autoResize = true
-renderer.resize(windowWidth, windowHeight)
-
 // Load the Hero spritesheet
 PIXI.loader
     .add('basicGun', 'assets/img/gun-1.png')
@@ -26,9 +16,24 @@ PIXI.loader
     .add('enemySpawn', 'assets/img/portal.png')
     .add('enemySpawnFrame', 'assets/img/portal-frame.png')
     .add('enemySpawnShadow', 'assets/img/portal-shadow.png')
-    .load(setup)
+    .load(() => {
+        const startButton = document.getElementById('startbutton')
+        startButton.classList.add('ready')
+        startButton.removeAttribute('disabled')
+    })
 
-function setup() {
+function start() {
+    // Create the renderer and add it to the body
+    const renderer = new PIXI.autoDetectRenderer(window.width, window.height)
+    document.getElementById('menu').classList.add('hidden')
+    document.body.appendChild(renderer.view)
+
+    // Resize the view to fill the entire window
+    renderer.view.style.position = 'absolute'
+    renderer.view.style.display = 'block'
+    renderer.autoResize = true
+    renderer.resize(windowWidth, windowHeight)
+
     let scene
     let game
 
@@ -48,23 +53,32 @@ function setup() {
             endScreen.position.set(windowWidth / 2, windowHeight / 2 - 20)
             scene.addChild(endScreen)
 
-            const replayText = new PIXI.Text("Press 'Enter' to replay.", {
+            const score = new PIXI.Text(`Score: ${game.score}`, {
                 fontFamily: "'Press Start 2P', Impact",
                 fontSize: "16px",
                 fill: "white"
             })
-            replayText.anchor.set(0.5, 0.5)
-            replayText.position.set(windowWidth / 2, windowHeight / 2 + 20)
-            scene.addChild(replayText)
+            score.anchor.set(0.5, 0.5)
+            score.position.set(windowWidth / 2, windowHeight / 2 + 20)
+            scene.addChild(score)
 
-            const score = new PIXI.Text(`Score: ${game.score}`, {
+            const replayText = new PIXI.Text("Press 'Enter' to replay.", {
                 fontFamily: "'Press Start 2P', Impact",
                 fontSize: "14px",
                 fill: "white"
             })
-            score.anchor.set(0.5, 0.5)
-            score.position.set(windowWidth / 2, windowHeight / 2 + 60)
-            scene.addChild(score)
+            replayText.anchor.set(0.5, 0.5)
+            replayText.position.set(windowWidth / 2, windowHeight / 2 + 60)
+            scene.addChild(replayText)
+
+            const backToMenuText = new PIXI.Text("Press 'Esc' to go back to the menu.", {
+                fontFamily: "'Press Start 2P', Impact",
+                fontSize: "14px",
+                fill: "white"
+            })
+            backToMenuText.anchor.set(0.5, 0.5)
+            backToMenuText.position.set(windowWidth / 2, windowHeight / 2 + 80)
+            scene.addChild(backToMenuText)
 
             state = end
         }
@@ -84,7 +98,18 @@ function setup() {
     initGame()
 
     let restartKey = keyboard(13)
-    restartKey.press = initGame
+    let backKey = keyboard(27)
+    restartKey.press = () => {
+        if (state === end) {
+            initGame()
+        }
+    }
+    backKey.press = () => {
+        if (state === end) {
+            document.body.removeChild(renderer.view)
+            document.getElementById('menu').classList.remove('hidden')
+        }
+    }
 
     /**
      * Updates 60times/second
@@ -99,3 +124,5 @@ function setup() {
 
     gameLoop()
 }
+
+document.getElementById('startbutton').onclick = start
