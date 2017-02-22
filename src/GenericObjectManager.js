@@ -1,5 +1,5 @@
-import RenderableObject from "./RenderableObject";
-import CollisionableObject from "./CollisionableObject";
+import RenderableObject from "./RenderableObject"
+import CollisionableObject from "./CollisionableObject"
 
 export const allObjectsManagers = {
     items: [],

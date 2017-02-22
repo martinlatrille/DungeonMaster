@@ -21,11 +21,15 @@ export default class EnemySpawn extends CollisionableObject {
         this.portal = new RenderableObject(PIXI.loader.resources.enemySpawn.texture)
         this.portal.position.set(posX, posY)
 
-        this.shadow = new RenderableObject(PIXI.loader.resources.enemySpawnFrame.texture)
-        this.shadow.position.set(posX, posY)
+        this.frame = new RenderableObject(PIXI.loader.resources.enemySpawnFrame.texture)
+        this.frame.position.set(posX, posY)
 
-        this.mainSprite.addChild(this.portal)
-        this.mainSprite.addChild(this.shadow)
+        // this.addChild(this.portal)
+        // this.addChild(this.frame)
+
+        game.addRenderable(this.portal)
+        game.addRenderable(this)
+        game.addRenderable(this.frame)
 
         this.childAttributes = {
             width: 30,

@@ -57,6 +57,10 @@ export default class Room extends PIXI.Container {
                     if (newChild instanceof CollisionableObject) {
                         game.addCollisionable(newChild)
                     }
+
+                    if (newChild instanceof RenderableObject) {
+                        game.addRenderable(newChild)
+                    }
                 }
             }
         }

@@ -5,7 +5,6 @@ import Room from './map/Room'
 
 import {doAllCollisions} from './utils/collisions'
 import {allObjectsManagers} from './GenericObjectManager'
-import {RENDERABLES} from './RenderableObject'
 
 import HeroManager from './hero/HeroManager'
 import {attachControls} from './hero/commands'
@@ -30,7 +29,6 @@ export default class GameManager extends PIXI.Container {
 
         // Create the Room
         this.room = new Room(this, Math.ceil(windowWidth / 100), Math.ceil(windowHeight / 100), 0, 100)
-        this.addChild(this.room)
 
         // Create the Hero
         this.heroManager = new HeroManager(this)
@@ -46,7 +44,7 @@ export default class GameManager extends PIXI.Container {
 
         // Create the Enemy Spawn
         this.enemySpawn = new EnemySpawn(this, windowWidth / 2, windowHeight - 230, updateScore)
-        this.addChild(this.enemySpawn)
+        this.addCollisionable(this.enemySpawn)
 
         this.ui = [
             new HealthBar(this, this.heroManager.hero),
@@ -86,8 +84,8 @@ export default class GameManager extends PIXI.Container {
     }
 
     update() {
-        RENDERABLES.forEach(renderable => {
-            if (!renderable.isRendered && !this.children.includes(renderable)) {
+        this.renderables.forEach(renderable => {
+            if (!renderable.isRendered) {
                 this.addChild(renderable)
                 renderable.isRendered = true
             }

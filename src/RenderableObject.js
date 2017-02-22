@@ -1,9 +1,8 @@
 import * as PIXI from 'pixi.js'
 
-export let RENDERABLES = []
 
 export default class RenderableObject extends PIXI.Container {
-    constructor(texture, zIndex = 1, addToStage = true) {
+    constructor(texture, zIndex = 1) {
         super()
 
         this.mainSprite = new PIXI.Sprite(texture)
@@ -18,10 +17,6 @@ export default class RenderableObject extends PIXI.Container {
         }
 
         this.mainSprite.anchor.set(0.5, 0.5)
-
-        if (addToStage) {
-            RENDERABLES.push(this)
-        }
     }
 
     get isRendered() {

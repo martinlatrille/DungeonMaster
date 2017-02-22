@@ -95,7 +95,6 @@ export default class Hero extends ControllableObject {
 
         const angle = this.angleToMouse
         let direction = 'toBottom'
-        let ySpritePos = 0
         let xScale = 1
 
         if (angle > 2) {
